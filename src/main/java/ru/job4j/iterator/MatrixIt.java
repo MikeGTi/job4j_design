@@ -62,4 +62,9 @@ public class MatrixIt implements Iterator<Integer> {
 
         return rst;
     }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 }

@@ -40,6 +40,11 @@ public class FlatMap<T> implements Iterator<T> {
         return cursor.next();
     }
 
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
+
     public static void main(String[] args) {
         Iterator<Iterator<Integer>> data = List.of(
                 List.of(1, 2, 3).iterator(),

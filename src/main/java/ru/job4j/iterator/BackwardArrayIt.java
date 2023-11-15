@@ -24,4 +24,9 @@ public class BackwardArrayIt implements Iterator<Integer> {
         }
         return data[point--];
     }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
+    }
 }

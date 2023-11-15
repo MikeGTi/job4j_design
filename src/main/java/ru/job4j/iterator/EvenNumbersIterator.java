@@ -22,11 +22,6 @@ public class EvenNumbersIterator implements Iterator<Integer> {
     }
 
     @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public Integer next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
@@ -50,5 +45,10 @@ public class EvenNumbersIterator implements Iterator<Integer> {
             }
         }
         return 0;
+    }
+
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException();
     }
 }
