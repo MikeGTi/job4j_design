@@ -10,6 +10,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BalancerTest {
+
     @Test
     void whenSingleAndIteratorThree() {
         List<ArrayList<Integer>> nodes = List.of(
