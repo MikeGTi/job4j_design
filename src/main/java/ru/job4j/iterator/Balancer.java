@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Balancer {
     public static void split(List<ArrayList<Integer>> nodes, Iterator<Integer> source) {
+
         Integer item;
         int nodeIndex = 0;
         ArrayList<Integer> node;
