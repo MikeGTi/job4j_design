@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class NonNullIterator implements Iterator<Integer> {
 
-    private Integer[] data;
+    private final Integer[] data;
     private int index;
 
     public NonNullIterator(Integer[] data) {
@@ -27,7 +27,6 @@ public class NonNullIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         Optional<Integer> rst = getNextNotNullItem();
         if (rst.isPresent()) {
             this.index++;
