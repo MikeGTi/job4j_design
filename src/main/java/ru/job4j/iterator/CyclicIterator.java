@@ -28,7 +28,6 @@ public class CyclicIterator<T> implements Iterator<T> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         Optional<T> rst = getNextItemCyclic();
         if (rst.isPresent()) {
             this.index++;
