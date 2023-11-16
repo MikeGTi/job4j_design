@@ -5,31 +5,39 @@ import java.util.*;
 public class FlatMap<T> implements Iterator<T> {
     private final Iterator<Iterator<T>> data;
     private Iterator<T> cursor = Collections.emptyIterator();
+    private T nextValue;
 
     public FlatMap(Iterator<Iterator<T>> data) {
         this.data = data;
-        if (data.hasNext()) {
-            cursor = data.next();
-        }
+        this.nextValue = null;
     }
 
-    private void getNextIterator() {
-        while (data.hasNext() && data.next().equals(Collections.emptyIterator())) {
-            cursor = data.next();
+    private boolean setNext() {
+        while (true) {
+            if (cursor.equals(Collections.emptyIterator()) && data.hasNext()) {
+                cursor = data.next();
+            }
+            if (cursor.equals(Collections.emptyIterator()) && !data.hasNext()) {
+                return false;
+            }
+            if (!cursor.equals(Collections.emptyIterator()) && cursor.hasNext()) {
+                this.nextValue = cursor.next();
+                return true;
+            }
+            if (!cursor.equals(Collections.emptyIterator()) && !cursor.hasNext()) {
+                if (data.hasNext()) {
+                    cursor = data.next();
+                } else {
+                    cursor = Collections.emptyIterator();
+                    this.nextValue = null;
+                }
+            }
         }
     }
 
     @Override
     public boolean hasNext() {
-        if (cursor.hasNext()) {
-            return true;
-        } else {
-            getNextIterator();
-        }
-        if (cursor.equals(Collections.emptyIterator())) {
-            return false;
-        }
-        return cursor.hasNext();
+        return this.nextValue != null || setNext();
     }
 
     @Override
@@ -37,7 +45,13 @@ public class FlatMap<T> implements Iterator<T> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return cursor.next();
+        if (this.nextValue != null) {
+            T next = this.nextValue;
+            this.nextValue = null;
+            setNext();
+            return next;
+        }
+        return null;
     }
 
     @Override
