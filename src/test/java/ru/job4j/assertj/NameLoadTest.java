@@ -7,6 +7,7 @@ class NameLoadTest {
     @Test
     void checkEmpty() {
         NameLoad nameLoad = new NameLoad();
+
         assertThatThrownBy(nameLoad::getMap)
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("no data");
@@ -15,6 +16,7 @@ class NameLoadTest {
     @Test
     void checkParseEmptyArrayException() {
         NameLoad nameLoad = new NameLoad();
+
         assertThatThrownBy(nameLoad::parse)
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("array is empty");
