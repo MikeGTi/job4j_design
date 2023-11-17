@@ -12,6 +12,7 @@ class ArrayItTest {
         ArrayIt iterator = new ArrayIt(
                 new int[] {1, 2, 3}
         );
+
         boolean result = iterator.hasNext();
         assertThat(result).isTrue();
         assertThat(iterator.hasNext()).isTrue();

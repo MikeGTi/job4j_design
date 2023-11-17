@@ -21,6 +21,7 @@ public class ArrayIt implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
+
         return data[point++];
     }
 
