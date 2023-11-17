@@ -5,39 +5,17 @@ import java.util.*;
 public class FlatMap<T> implements Iterator<T> {
     private final Iterator<Iterator<T>> data;
     private Iterator<T> cursor = Collections.emptyIterator();
-    private T nextValue;
 
     public FlatMap(Iterator<Iterator<T>> data) {
         this.data = data;
-        this.nextValue = null;
-    }
-
-    private boolean setNext() {
-        while (true) {
-            if (cursor.equals(Collections.emptyIterator()) && data.hasNext()) {
-                cursor = data.next();
-            }
-            if (cursor.equals(Collections.emptyIterator()) && !data.hasNext()) {
-                return false;
-            }
-            if (!cursor.equals(Collections.emptyIterator()) && cursor.hasNext()) {
-                this.nextValue = cursor.next();
-                return true;
-            }
-            if (!cursor.equals(Collections.emptyIterator()) && !cursor.hasNext()) {
-                if (data.hasNext()) {
-                    cursor = data.next();
-                } else {
-                    cursor = Collections.emptyIterator();
-                    this.nextValue = null;
-                }
-            }
-        }
     }
 
     @Override
     public boolean hasNext() {
-        return this.nextValue != null || setNext();
+        while (data.hasNext() && !cursor.hasNext()) {
+            cursor = data.next();
+        }
+        return cursor.hasNext();
     }
 
     @Override
@@ -45,13 +23,7 @@ public class FlatMap<T> implements Iterator<T> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        if (this.nextValue != null) {
-            T next = this.nextValue;
-            this.nextValue = null;
-            setNext();
-            return next;
-        }
-        return null;
+        return cursor.next();
     }
 
     @Override
