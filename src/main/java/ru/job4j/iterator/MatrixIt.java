@@ -38,16 +38,18 @@ public class MatrixIt implements Iterator<Integer> {
             column = 0;
             row++;
         }
+
         for (int i = row; i < data.length; i++) {
             for (int j = column; j < data[i].length; j++) {
-                    if (data[i][j] != 0) {
-                        this.row = i;
-                        this.column = j;
-                        return data[i][j];
-                    }
+                if (data[i][j] != 0) {
+                    this.row = i;
+                    this.column = j;
+                    return data[i][j];
                 }
-                column = 0;
             }
+            column = 0;
+        }
+
         return 0;
     }
 

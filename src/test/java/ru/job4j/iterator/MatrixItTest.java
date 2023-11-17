@@ -20,6 +20,7 @@ class MatrixItTest  {
         int[][] input = {
                 {}, {1}
         };
+
         MatrixIt iterator = new MatrixIt(input);
         assertThat(iterator.next()).isEqualTo(1);
     }
