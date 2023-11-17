@@ -26,10 +26,8 @@ public class EvenNumbersIterator implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-
         int rst = getNextEvenItem();
         this.index++;
-
         return rst;
     }
 
