@@ -10,6 +10,7 @@ public class Generics {
         List<Animal> first = new ArrayList<>();
         List<Predator> second = new ArrayList<>();
         List<Tiger> third = new ArrayList<>();
+
         first.add(new Animal());
         second.add(new Predator());
         third.add(new Tiger());

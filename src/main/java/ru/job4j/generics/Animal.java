@@ -22,9 +22,11 @@ public class Animal {
         if (this == o) {
             return true;
         }
+
         if (!(o instanceof Animal animal)) {
             return false;
         }
+
         return Objects.equals(getName(), animal.getName());
     }
 
