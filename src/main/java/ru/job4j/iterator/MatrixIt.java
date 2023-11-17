@@ -34,6 +34,7 @@ public class MatrixIt implements Iterator<Integer> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
+
         return data[row][column++];
     }
 
