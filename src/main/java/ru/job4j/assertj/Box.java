@@ -19,6 +19,7 @@ public class Box {
             case 8 -> "Cube";
             default -> UNKNOWN;
         };
+
         if (UNKNOWN.equals(type)) {
             vertex = -1;
         }

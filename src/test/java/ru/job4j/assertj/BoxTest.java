@@ -10,6 +10,7 @@ class BoxTest {
     void isThisSphere() {
         Box box = new Box(0, 10);
         String name = box.whatsThis();
+
         assertThat(name).isEqualTo("Sphere");
     }
 
@@ -17,6 +18,7 @@ class BoxTest {
     void isThisTetrahedron() {
         Box box = new Box(4, 10);
         String name = box.whatsThis();
+
         assertThat(name).isEqualTo("Tetrahedron");
     }
 
@@ -24,6 +26,7 @@ class BoxTest {
     void isThisCube() {
         Box box = new Box(8, 10);
         String name = box.whatsThis();
+
         assertThat(name).isEqualTo("Cube");
     }
 
@@ -31,6 +34,7 @@ class BoxTest {
     void isThisUnknownObject() {
         Box box = new Box(10, 10);
         String name = box.whatsThis();
+
         assertThat(name).isEqualTo("Unknown object");
     }
 
@@ -38,6 +42,7 @@ class BoxTest {
     void whenVertexNot048ThenNumberVerticesMinus1() {
         Box box = new Box(2147483647, 10);
         int vertices = box.getNumberOfVertices();
+
         assertThat(vertices).isEqualTo(-1);
     }
 
