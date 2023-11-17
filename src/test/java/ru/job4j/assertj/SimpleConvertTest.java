@@ -12,6 +12,7 @@ class SimpleConvertTest {
     void checkArray() {
         SimpleConvert simpleConvert = new SimpleConvert();
         String[] array = simpleConvert.toArray("first", "second", "three", "four", "five");
+
         assertThat(array).isInstanceOf(String[].class)
                 .hasSize(5)
                 .contains("second")
