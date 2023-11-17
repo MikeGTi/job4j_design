@@ -11,6 +11,7 @@ class FlatMapTest {
                 List.of(1).iterator(),
                 List.of(2, 3).iterator()
         ).iterator();
+
         FlatMap<Integer> flatMap = new FlatMap<>(data);
         assertThat(flatMap.next()).isEqualTo(1);
         assertThat(flatMap.next()).isEqualTo(2);
