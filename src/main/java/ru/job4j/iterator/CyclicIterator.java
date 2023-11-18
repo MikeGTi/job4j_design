@@ -1,9 +1,6 @@
 package ru.job4j.iterator;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 public class CyclicIterator<T> implements Iterator<T> {
 
@@ -16,11 +13,18 @@ public class CyclicIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        if (data.size() == 0) {
-            return false;
-        } else {
-            return getNextItemCyclic().isPresent();
+        T rst = null;
+        while (!data.isEmpty()) {
+            if (index == data.size()) {
+                index = 0;
+            }
+            rst = data.get(index);
+            if (rst != null) {
+                break;
+            }
+            index++;
         }
+        return rst != null;
     }
 
     @Override
@@ -28,31 +32,7 @@ public class CyclicIterator<T> implements Iterator<T> {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        Optional<T> rst = getNextItemCyclic();
-        if (rst.isPresent()) {
-            this.index++;
-            return rst.get();
-        } else {
-            throw new Error("Method getNextItem() return 'Optional.empty()' value");
-        }
-    }
-
-    private Optional<T> getNextItemCyclic() {
-        if (data.size() == 0) {
-            return Optional.empty();
-        }
-
-        if (index >= data.size()) {
-            index = 0;
-        }
-
-        for (int i = index; i < data.size(); i++) {
-            if (data.get(i) != null) {
-                this.index = i;
-                return Optional.of(data.get(i));
-            }
-        }
-        return Optional.empty();
+        return data.get(index++);
     }
 
     @Override
