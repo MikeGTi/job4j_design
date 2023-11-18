@@ -13,18 +13,10 @@ public class CyclicIterator<T> implements Iterator<T> {
 
     @Override
     public boolean hasNext() {
-        T rst = null;
-        while (!data.isEmpty()) {
-            if (index == data.size()) {
-                index = 0;
-            }
-            rst = data.get(index);
-            if (rst != null) {
-                break;
-            }
-            index++;
+        if (index == data.size()) {
+            index = 0;
         }
-        return rst != null;
+        return !data.isEmpty();
     }
 
     @Override
