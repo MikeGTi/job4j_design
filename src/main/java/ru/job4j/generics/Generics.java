@@ -14,9 +14,9 @@ public class Generics {
         second.add(new Predator());
         third.add(new Tiger());
 
-        generics.printObject((List) first);
-        generics.printObject((List) second);
-        generics.printObject((List) third);
+        generics.printObject(first);
+        generics.printObject(second);
+        generics.printObject(third);
         System.out.println();
 
         /*generics.printBoundedWildCard(first);*/
@@ -29,8 +29,8 @@ public class Generics {
         /*generics.printLowerBoundedWildCard(third);*/
     }
 
-    public void printObject(List<Object> list) {
-        for (Iterator<Object> iterator = list.iterator(); iterator.hasNext();) {
+    public void printObject(List<?> list) {
+        for (Iterator<?> iterator = list.iterator(); iterator.hasNext();) {
             Object next = iterator.next();
             System.out.println("Текущий элемент: " + next);
         }
