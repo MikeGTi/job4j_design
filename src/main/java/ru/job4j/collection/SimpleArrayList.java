@@ -23,8 +23,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        Objects.checkIndex(index, size);
-        T old = container[index];
+        T old = get(index);
         container[index] = newValue;
         return old;
     }
@@ -33,6 +32,16 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     public T get(int index) {
         Objects.checkIndex(index, size);
         return container[index];
+    }
+
+    @Override
+    public T remove(int index) {
+        T removed = get(index);
+        System.arraycopy(container,  index + 1, container, index, size - 1 - index);
+        container[size - 1] = null;
+        size--;
+        modCount++;
+        return removed;
     }
 
     @Override
@@ -51,9 +60,6 @@ public class SimpleArrayList<T> implements SimpleList<T> {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                while (index != size && container[index] == null) {
-                    index++;
-                }
                 return index != size;
             }
 
@@ -70,30 +76,5 @@ public class SimpleArrayList<T> implements SimpleList<T> {
     private T[] grow() {
         final int newSize = (container.length == 0 ? 2 : container.length * 2);
         return Arrays.copyOf(container, newSize);
-    }
-
-    /*public static void main(String[] args) {
-        int[] list1 = new int[] {0, 1, 2, 3, 4, 5, 6, 0, 7, 8, 9};
-        int[] list2 = new int[] {10, 11, 12, 13, 14, 15, 16};
-        int[] list3 = new int[20];
-
-        Arrays.stream(list1).mapToObj(i -> i + " ").forEach(System.out::print);
-        System.out.println();
-
-        System.arraycopy(list1, 8, list1, 7, 3);
-        list1[list1.length - 1] = 0;
-
-        Arrays.stream(list1).mapToObj(i -> i + " ").forEach(System.out::print);
-    }*/
-
-    @Override
-    public T remove(int index) {
-        Objects.checkIndex(index, size);
-        T removed = container[index];
-        System.arraycopy(container,  index + 1, container, index, size - 1 - index);
-        container[size - 1] = null;
-        size--;
-        modCount++;
-        return removed;
     }
 }
