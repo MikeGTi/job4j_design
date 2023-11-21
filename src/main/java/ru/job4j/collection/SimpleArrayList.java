@@ -23,9 +23,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T set(int index, T newValue) {
-        if (isOutOfBound(index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         T old = container[index];
         container[index] = newValue;
         return old;
@@ -33,9 +31,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T get(int index) {
-        if (isOutOfBound(index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         return container[index];
     }
 
@@ -46,7 +42,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private int index;
             private final int expectedModCount = modCount;
 
@@ -76,10 +72,6 @@ public class SimpleArrayList<T> implements SimpleList<T> {
         return Arrays.copyOf(container, newSize);
     }
 
-    private boolean isOutOfBound(int index) {
-        return 0 <= index && index >= size;
-    }
-
     /*public static void main(String[] args) {
         int[] list1 = new int[] {0, 1, 2, 3, 4, 5, 6, 0, 7, 8, 9};
         int[] list2 = new int[] {10, 11, 12, 13, 14, 15, 16};
@@ -96,9 +88,7 @@ public class SimpleArrayList<T> implements SimpleList<T> {
 
     @Override
     public T remove(int index) {
-        if (isOutOfBound(index)) {
-            throw new IndexOutOfBoundsException();
-        }
+        Objects.checkIndex(index, size);
         T removed = container[index];
         System.arraycopy(container,  index + 1, container, index, size - 1 - index);
         container[size - 1] = null;
