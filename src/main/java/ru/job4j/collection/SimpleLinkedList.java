@@ -9,11 +9,11 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
 
     @Override
     public void add(E value) {
-        SimpleLinkedList.Node<E> newNode = new SimpleLinkedList.Node<>(value, null);
+        Node<E> newNode = new Node<>(value, null);
         if (head == null) {
             head = newNode;
         } else {
-            SimpleLinkedList.Node<E> last = head;
+            Node<E> last = head;
             while (last.next != null) {
                 last = last.next;
             }
@@ -27,10 +27,8 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
     public E get(int index) {
         Objects.checkIndex(index, size);
 
-        int i = 0;
-        SimpleLinkedList.Node<E> node = head;
-        while (index != i) {
-            i++;
+        Node<E> node = head;
+        for (int i = 0; i < index; i++) {
             node = node.next;
         }
         return node.item;
@@ -75,7 +73,7 @@ public class SimpleLinkedList<E> implements SimpleLinked<E> {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("SimpleLinkedList{");
-        SimpleLinkedList.Node<E> node = head;
+        Node<E> node = head;
         while (node != null && node.next != null) {
             stringBuilder.append(node.item.toString())
                          .append(", ");
