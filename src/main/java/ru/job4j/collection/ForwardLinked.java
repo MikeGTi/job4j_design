@@ -53,6 +53,8 @@ public class ForwardLinked<T> implements Iterable<T> {
         if (head.next != null) {
             head.item = head.next.item;
             head = head.next;
+        } else {
+            head = null;
         }
 
         toDelete.item = null;
