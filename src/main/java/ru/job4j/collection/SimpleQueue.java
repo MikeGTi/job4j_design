@@ -6,8 +6,6 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
 
-    /* добавьте переменные, если они требуются */
-
     private boolean isEmpty(SimpleStack<T> stack) {
         boolean isEmpty = false;
         try {
@@ -19,7 +17,6 @@ public class SimpleQueue<T> {
     }
 
     public T poll() {
-        //return lower item stack 'in' and delete it
         if (isEmpty(out)) {
             while (!isEmpty(in)) {
                 out.push(in.pop());
@@ -32,7 +29,6 @@ public class SimpleQueue<T> {
     }
 
     public void push(T value) {
-        //set item in stack 'in'
         in.push(value);
     }
 }
