@@ -41,17 +41,13 @@ public class ForwardLinked<T> implements Iterable<T> {
         modCount++;
     }
 
-    public T deleteFirst() throws NoSuchElementException {
+    public T deleteFirst() {
         if (head == null) {
             throw new NoSuchElementException();
         }
-
         T value;
         value = head.item;
-
-        head.item = head.next.item;
         head = head.next;
-
         size--;
         modCount++;
         return value;
