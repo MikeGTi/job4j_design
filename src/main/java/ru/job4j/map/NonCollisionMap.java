@@ -31,14 +31,11 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
     }
 
     private int hash(int hashCode) {
-        return (hashCode == 0) ? 0 : hashCode ^ (hashCode >>> 16);
-        /* alternative version
-        *  return (hashCode == 0) ? 0 : hashCode % capacity;
-        * */
+        return hashCode ^ (hashCode >>> 16);
     }
 
     private int indexFor(int hash) {
-        return hash & table.length - 1;
+        return hash & capacity - 1;
     }
 
     private void expand() {
@@ -46,7 +43,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         MapEntry<K, V>[] newTable = new MapEntry[capacity];
         for (MapEntry<K, V> entry: table) {
             if (entry != null) {
-                newTable[hash(Objects.hashCode(entry.key)) & newTable.length - 1] = entry;
+                newTable[indexFor(hash(Objects.hashCode(entry.key)))] = entry;
             }
         }
         table = newTable;
@@ -59,7 +56,8 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         int index = indexFor(keyHash);
         V value = null;
         if (this.table[index] != null) {
-            if (Objects.hashCode(this.table[index].key) == keyHashCode && Objects.equals(this.table[index].key, key)) {
+            if (Objects.hashCode(this.table[index].key) == keyHashCode
+                    && Objects.equals(this.table[index].key, key)) {
                 value = this.table[index].value;
                 count++;
             }
@@ -75,7 +73,8 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
         boolean removed = false;
         if (table[index] != null) {
-            if (Objects.hashCode(table[index].key) == keyHashCode && Objects.equals(table[index].key, key)) {
+            if (Objects.hashCode(table[index].key) == keyHashCode
+                    && Objects.equals(table[index].key, key)) {
                 table[index] = null;
                 removed = true;
                 count--;
@@ -127,6 +126,9 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         }
     }
 
+    /*
+    * testing private methods
+    */
     public static void main(String[] args) {
         NonCollisionMap<Integer, String> map = new NonCollisionMap<>();
 
