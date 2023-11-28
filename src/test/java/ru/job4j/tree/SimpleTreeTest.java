@@ -20,6 +20,13 @@ public class SimpleTreeTest {
     }
 
     @Test
+    void whenElAddThenTrue() {
+        Tree<Integer> tree = new SimpleTree<>(1);
+        assertThat(tree.add(1, 2)).isTrue();
+        assertThat(tree.add(1, 2)).isFalse();
+    }
+
+    @Test
     void when3ElThen3child() {
         Tree<Integer> tree = new SimpleTree<>(1);
         tree.add(1, 2);
