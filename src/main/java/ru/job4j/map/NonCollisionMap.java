@@ -19,8 +19,7 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         if (count == (int) (capacity * LOAD_FACTOR)) {
             expand();
         }
-        int hk = hash(Objects.hashCode(key));
-        int index = indexFor(hk);
+        int index = getIndex(key);
         boolean free = (this.table[index] == null);
         if (free) {
             this.table[index] = new MapEntry<>(key, value);
@@ -38,12 +37,21 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
         return hash & capacity - 1;
     }
 
+    private int getIndex(K key) {
+        return indexFor(hash(Objects.hashCode(key)));
+    }
+
+    private boolean isIdentical(K key1, K key2) {
+        return Objects.hashCode(key1) == Objects.hashCode(key2)
+                && Objects.equals(key1, key2);
+    }
+
     private void expand() {
         capacity *= 2;
         MapEntry<K, V>[] newTable = new MapEntry[capacity];
         for (MapEntry<K, V> entry: table) {
             if (entry != null) {
-                newTable[indexFor(hash(Objects.hashCode(entry.key)))] = entry;
+                newTable[getIndex(entry.key)] = entry;
             }
         }
         table = newTable;
@@ -51,13 +59,10 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public V get(K key) {
-        int keyHashCode = Objects.hashCode(key);
-        int keyHash = hash(keyHashCode);
-        int index = indexFor(keyHash);
+        int index = getIndex(key);
         V value = null;
         if (this.table[index] != null) {
-            if (Objects.hashCode(this.table[index].key) == keyHashCode
-                    && Objects.equals(this.table[index].key, key)) {
+            if (isIdentical(this.table[index].key, key)) {
                 value = this.table[index].value;
                 count++;
             }
@@ -67,14 +72,10 @@ public class NonCollisionMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public boolean remove(K key) {
-        int keyHashCode = Objects.hashCode(key);
-        int keyHash = hash(keyHashCode);
-        int index = indexFor(keyHash);
-
+        int index = getIndex(key);
         boolean removed = false;
         if (table[index] != null) {
-            if (Objects.hashCode(table[index].key) == keyHashCode
-                    && Objects.equals(table[index].key, key)) {
+            if (isIdentical(this.table[index].key, key)) {
                 table[index] = null;
                 removed = true;
                 count--;
