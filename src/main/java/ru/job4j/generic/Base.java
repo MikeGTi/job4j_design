@@ -2,7 +2,7 @@ package ru.job4j.generic;
 
 public abstract class Base {
 
-    private final String id;
+    private String id;
 
     public Base(final String id) {
         this.id = id;
@@ -10,5 +10,9 @@ public abstract class Base {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
