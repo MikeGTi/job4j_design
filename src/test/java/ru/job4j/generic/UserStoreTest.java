@@ -2,7 +2,6 @@ package ru.job4j.generic;
 
 import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import ru.job4j.generic.User;
 
 class UserStoreTest {
 
