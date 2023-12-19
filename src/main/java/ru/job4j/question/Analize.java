@@ -11,19 +11,15 @@ public class Analize {
         int added = 0;
         int changed = 0;
         int deleted = 0;
-
         HashMap<String, User> prev = new HashMap<>();
         HashMap<String, User> curr = new HashMap<>();
-
         previous.forEach(u -> prev.put(u.getId(), u));
         current.forEach(u -> curr.put(u.getId(), u));
-
         for (User user: previous) {
             if (!curr.containsKey(user.getId())) {
                 deleted++;
             }
         }
-
         for (User user: current) {
             if (!prev.containsKey(user.getId())) {
                 added++;
@@ -33,7 +29,6 @@ public class Analize {
                 }
             }
         }
-
         return new Info(added, changed, deleted);
     }
 
