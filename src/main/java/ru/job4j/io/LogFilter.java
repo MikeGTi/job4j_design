@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class LogFilter {
-    private static final String LINE_BREAK = "\n"; //System.lineSeparator();
+    private static final String LINE_BREAK = System.lineSeparator();
 
     private final String fileText;
 
