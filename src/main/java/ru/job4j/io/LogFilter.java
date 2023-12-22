@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public class LogFilter {
-    private static final String LINE_BREAK = "\r\n";
+    private static final String LINE_BREAK = System.lineSeparator();
+
     private final String fileText;
 
     public LogFilter(String path) {
@@ -55,7 +56,7 @@ public class LogFilter {
 
     public static void main(String[] args) {
         LogFilter logFilter = new LogFilter("data/log.txt");
-        //logFilter.filter().forEach(System.out::println);
+        logFilter.filter().forEach(System.out::println);
         logFilter.saveTo("data/404.txt");
     }
 }
