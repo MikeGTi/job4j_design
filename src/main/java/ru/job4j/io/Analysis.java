@@ -25,7 +25,7 @@ public class Analysis {
         return text;
     }
 
-    private List<String> getDowntime(String[] lines) throws IllegalArgumentException {
+    public List<String> getDowntime(String[] lines) throws IllegalArgumentException {
         if (lines.length == 1 && "".equals(lines[0])) {
             throw new IllegalArgumentException("file is empty");
         }
