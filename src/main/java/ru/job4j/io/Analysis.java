@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 public class Analysis {
-    String unavailable = "";
+    private String unavailable = "";
 
     public void unavailable(String source, String target) {
         StringJoiner sj = new StringJoiner("");
