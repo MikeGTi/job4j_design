@@ -45,4 +45,16 @@ class AnalysisTest {
         }
         assertThat("10:57:01;10:57:41;10:58:01;10:58:41;10:59:01;10:59:41;11:01:02;11:02:02;").hasToString(result.toString());
     }
+
+    @Test
+    void getDowntimeOneBigPeriod(@TempDir Path tempDir) throws IOException {
+        File target  = tempDir.resolve("test4_target.txt").toFile();
+        Analysis analysis = new Analysis();
+        analysis.unavailable("data/io/server_availability_analysis/test4_server.log", target.getAbsolutePath());
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader input = new BufferedReader(new FileReader(target))) {
+            input.lines().forEach(result::append);
+        }
+        assertThat("10:57:01;11:02:02;").hasToString(result.toString());
+    }
 }
