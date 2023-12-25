@@ -1,35 +1,48 @@
 package ru.job4j.io;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
+import java.io.*;
+import java.nio.file.Path;
 
 import static org.assertj.core.api.Assertions.*;
 
 class AnalysisTest {
 
     @Test
-    void getDowntimeOnePeriod() {
+    void getDowntimeOnePeriod(@TempDir Path tempDir) throws IOException {
+        File target  = tempDir.resolve("test1_target.txt").toFile();
         Analysis analysis = new Analysis();
-        analysis.unavailable("data/io/server_availability_analysis/test1_server.log", "data/io/server_availability_analysis/test1_target.csv");
-        /*assertThat(analysis.getUnavailable()).isEqualTo("10:57:01;11:02:02;\n");
-         * recode on file
-         */
+        analysis.unavailable("data/io/server_availability_analysis/test1_server.log", target.getAbsolutePath());
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader input = new BufferedReader(new FileReader(target))) {
+            input.lines().forEach(result::append);
+        }
+        assertThat("10:57:01;11:02:02;").hasToString(result.toString());
     }
 
     @Test
-    void getDowntimeTwoPeriods() {
+    void getDowntimeTwoPeriods(@TempDir Path tempDir) throws IOException {
+        File target  = tempDir.resolve("test2_target.txt").toFile();
         Analysis analysis = new Analysis();
-        analysis.unavailable("data/io/server_availability_analysis/test2_server.log", "data/io/server_availability_analysis/test2_target.csv");
-        /*assertThat(analysis.getUnavailable()).isEqualTo("10:57:01;10:59:01;\n11:01:02;11:02:02;\n");
-        * recode on file
-        */
+        analysis.unavailable("data/io/server_availability_analysis/test2_server.log", target.getAbsolutePath());
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader input = new BufferedReader(new FileReader(target))) {
+            input.lines().forEach(result::append);
+        }
+        assertThat("10:57:01;10:59:01;11:01:02;11:02:02;").hasToString(result.toString());
     }
 
     @Test
-    void getDowntimeManyPeriods() {
+    void getDowntimeManyPeriods(@TempDir Path tempDir) throws IOException {
+        File target  = tempDir.resolve("test3_target.txt").toFile();
         Analysis analysis = new Analysis();
-        analysis.unavailable("data/io/server_availability_analysis/test3_server.log", "data/io/server_availability_analysis/test3_target.csv");
-        /*assertThat(analysis.getUnavailable()).isEqualTo("10:57:01;10:57:41;\n10:58:01;10:58:41;\n10:59:01;10:59:41;\n11:01:02;11:02:02;\n");
-        * recode on file
-         */
+        analysis.unavailable("data/io/server_availability_analysis/test3_server.log", target.getAbsolutePath());
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader input = new BufferedReader(new FileReader(target))) {
+            input.lines().forEach(result::append);
+        }
+        assertThat("10:57:01;10:57:41;10:58:01;10:58:41;10:59:01;10:59:41;11:01:02;11:02:02;").hasToString(result.toString());
     }
 }

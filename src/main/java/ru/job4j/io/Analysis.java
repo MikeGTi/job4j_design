@@ -10,16 +10,17 @@ public class Analysis {
             String line;
             String[] splitted;
             String add;
-            boolean downStarts = false;
+            boolean isStatusChange;
+            boolean downStarted = false;
             while ((line = in.readLine()) != null) {
                 line = line.trim();
                 if (!line.isBlank() && line.contains(" ")) {
                     splitted = line.split(" ", 2);
-                    add = (!("400".equals(splitted[0])) && !("500".equals(splitted[0])) && downStarts) ? System.lineSeparator() : "";
-                    if ((("400".equals(splitted[0]) || "500".equals(splitted[0])) && !downStarts)
-                        || (!("400".equals(splitted[0])) && !("500".equals(splitted[0])) && downStarts)) {
-                        out.print(splitted[1] + ";" + add);
-                        downStarts = !downStarts;
+                    isStatusChange = ("400".equals(splitted[0]) || "500".equals(splitted[0]));
+                    add = (downStarted && !isStatusChange) ? System.lineSeparator() : "";
+                    if (downStarted ^ isStatusChange) {
+                        out.append(splitted[1]).append(";").append(add);
+                        downStarted = !downStarted;
                     }
                 }
             }
