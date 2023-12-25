@@ -1,54 +1,31 @@
 package ru.job4j.io;
 
 import java.io.*;
-import java.util.*;
 
 public class Analysis {
-    private String unavailable = "";
 
     public void unavailable(String source, String target) {
-        StringJoiner sj = new StringJoiner("");
-        try (BufferedReader in = new BufferedReader(new FileReader(source))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(source));
+             PrintWriter out = new PrintWriter(new BufferedOutputStream(new FileOutputStream(target)))) {
             String line;
             String[] splitted;
+            String add;
             boolean downStarts = false;
             while ((line = in.readLine()) != null) {
-                if (validate(line)) {
+                line = line.trim();
+                if (!line.isBlank() && line.contains(" ")) {
                     splitted = line.split(" ", 2);
-                    if (("400".equals(splitted[0]) || "500".equals(splitted[0])) && !downStarts) {
-                        sj.add(splitted[1] + ";");
-                        downStarts = true;
-                    }
-                    if (!("400".equals(splitted[0])) && !("500".equals(splitted[0])) && downStarts) {
-                        sj.add(splitted[1] + ";\n");
-                        downStarts = false;
+                    add = (!("400".equals(splitted[0])) && !("500".equals(splitted[0])) && downStarts) ? System.lineSeparator() : "";
+                    if ((("400".equals(splitted[0]) || "500".equals(splitted[0])) && !downStarts)
+                        || (!("400".equals(splitted[0])) && !("500".equals(splitted[0])) && downStarts)) {
+                        out.print(splitted[1] + ";" + add);
+                        downStarts = !downStarts;
                     }
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.unavailable = sj.toString();
-        saveTo(target, sj.toString());
-    }
-
-    private boolean validate(String s) {
-        return s.contains(" ") && !" ".equals(s) && !s.startsWith(" ") && (s.indexOf(" ") != s.length() - 1);
-    }
-
-    public void saveTo(String outputFilePath, String data) {
-        try (PrintWriter out = new PrintWriter(
-                new BufferedOutputStream(
-                        new FileOutputStream(outputFilePath)
-                ))) {
-            out.println(data);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String getUnavailable() {
-        return unavailable;
     }
 
     public static void main(String[] args) {
