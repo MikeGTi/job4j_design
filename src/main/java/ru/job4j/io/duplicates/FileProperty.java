@@ -50,7 +50,8 @@ public class FileProperty {
     public String toString() {
         return "FileProperty{"
                 + "name='" + name + '\''
-                + ", size=" + size / 1024
+                + ", size="
+                + String.format("%.2f", (double) size / 1024)
                 + "Kb}";
     }
 }
