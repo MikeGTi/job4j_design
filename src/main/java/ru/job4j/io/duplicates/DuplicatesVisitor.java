@@ -15,14 +15,7 @@ public class DuplicatesVisitor extends SimpleFileVisitor<Path> {
     public FileVisitResult visitFile(Path path,
                                      BasicFileAttributes attributes) {
         File file = path.toFile();
-        if (file.isFile()) {
-            FileProperty fileProperty = new FileProperty(file.length(), file.getName());
-            if (filesMap.containsKey(fileProperty)) {
-                filesMap.get(fileProperty).add(path);
-            } else {
-                filesMap.put(fileProperty, new ArrayList<>());
-            }
-        }
+        filesMap.computeIfAbsent(new FileProperty(file.length(), file.getName()), k -> new ArrayList<>()).add(path);
         return FileVisitResult.CONTINUE;
     }
 
