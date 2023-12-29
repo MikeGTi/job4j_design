@@ -15,6 +15,10 @@ public class ArgsName {
         return values.get(key);
     }
 
+    public int size() {
+        return values.size();
+    }
+
     private void parse(String[] args) {
         String[] splitted;
         for (String arg : args) {
@@ -55,6 +59,11 @@ public class ArgsName {
         Arrays.stream(args).forEach(ArgsName::validate);
         names.parse(args);
         return names;
+    }
+
+    public void printArgs() {
+        System.out.println("\nArgs:");
+        values.forEach((key, value) -> System.out.printf("    '%s' : '%s'%n", key, value));
     }
 
     public static void main(String[] args) {
