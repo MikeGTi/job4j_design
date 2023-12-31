@@ -1,8 +1,8 @@
 package ru.job4j.io.chat;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
+import static java.nio.charset.StandardCharsets.*;
 
 public class UsageEncoding {
 
@@ -38,7 +38,7 @@ public class UsageEncoding {
 
     public void writeDataInFile(String path, String data) {
         try (PrintWriter writer = new PrintWriter(
-                new FileWriter(path, StandardCharsets.UTF_8, true))) {
+                new FileWriter(path, UTF_8, true))) {
             writer.println(data);
         } catch (IOException e) {
             e.printStackTrace();
