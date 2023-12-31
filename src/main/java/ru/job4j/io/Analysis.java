@@ -31,8 +31,8 @@ public class Analysis {
 
     public static void main(String[] args) {
         Analysis analysis = new Analysis();
-        analysis.unavailable("data/io/server_availability_analysis/test1_server.log", "data/io/server_availability_analysis/test1_target.csv");
-        analysis.unavailable("data/io/server_availability_analysis/test2_server.log", "data/io/server_availability_analysis/test2_target.csv");
-        analysis.unavailable("data/io/server_availability_analysis/test3_server.log", "data/io/server_availability_analysis/test3_target.csv");
+        analysis.unavailable("./src/data/io/server_availability_analysis/test1_server.log", "./src/data/io/server_availability_analysis/test1_target.csv");
+        analysis.unavailable("./src/data/io/server_availability_analysis/test2_server.log", "./src/data/io/server_availability_analysis/test2_target.csv");
+        analysis.unavailable("./src/data/io/server_availability_analysis/test3_server.log", "./src/data/io/server_availability_analysis/test3_target.csv");
     }
 }
