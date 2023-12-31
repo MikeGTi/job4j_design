@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.*;
 class ConfigTest {
     @Test
     void whenCommentRightPairAndEqualSignMoreThanOne() {
-        String path = "./data/test1_config.properties";
+        String path = "./src/data/test1_config.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.value("# test comment")).isEqualTo("");
@@ -19,7 +19,7 @@ class ConfigTest {
 
     @Test
     void checkEmptyKey() {
-        String path = "./data/test2_config.properties";
+        String path = "./src/data/test2_config.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -28,7 +28,7 @@ class ConfigTest {
 
     @Test
     void checkEmptyValue() {
-        String path = "./data/test3_config.properties";
+        String path = "./src/data/test3_config.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -37,7 +37,7 @@ class ConfigTest {
 
     @Test
     void checkEmptyKeyValue() {
-        String path = "./data/test4_config.properties";
+        String path = "./src/data/test4_config.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -46,7 +46,7 @@ class ConfigTest {
 
     @Test
     void checkEmptyFile() {
-        String path = "./data/test5_config.properties";
+        String path = "./src/data/test5_config.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
@@ -55,7 +55,7 @@ class ConfigTest {
 
     @Test
     void checkWithoutEqualSign() {
-        String path = "./data/test6_config.properties";
+        String path = "./src/data/test6_config.properties";
         Config config = new Config(path);
         assertThatThrownBy(config::load)
                 .isInstanceOf(IllegalArgumentException.class)
