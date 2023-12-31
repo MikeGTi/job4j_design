@@ -14,7 +14,8 @@ public class UsageEncoding {
                 "Новая строка 2",
                 "Новая строка 3",
                 "Новая строка 4",
-                "Новая строка 5"
+                "Новая строка 5",
+                "Новая строка 6"
         );
         for (String string : strings) {
             encoding.writeDataInFile(path, string);

@@ -21,10 +21,10 @@ public class ConsoleChat {
         List<String> chatLog = new ArrayList<>();
         List<String> botPhrases = readPhrases();
         Random rnd = new Random();
-        boolean botShutUp = false;
         String line = "";
         chatLog.add(line);
         String answer;
+        boolean botShutUp = false;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
             while ((line = br.readLine()) != null && !OUT.equalsIgnoreCase(line)) {
                 chatLog.add(line);
