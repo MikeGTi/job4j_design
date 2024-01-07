@@ -18,7 +18,7 @@ public class EchoServer {
                     if (inpReq.contains("msg=bye")) {
                         server.close();
                     } else {
-                        if (inpReq.contains("hello")) {
+                        if (inpReq.contains("msg=hello")) {
                             output.write("Hello!".getBytes());
                         } else {
                             output.write("What?".getBytes());
