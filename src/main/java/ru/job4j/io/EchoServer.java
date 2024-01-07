@@ -15,7 +15,7 @@ public class EchoServer {
                     output.write("HTTP/1.1 200 OK\r\n\r\n".getBytes());
 
                     String inpReq = input.readLine().toLowerCase();
-                    if (inpReq.contains("msg=bye")) {
+                    if (inpReq.contains("msg=exit")) {
                         server.close();
                     } else {
                         if (inpReq.contains("msg=hello")) {
