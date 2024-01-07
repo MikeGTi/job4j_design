@@ -21,7 +21,7 @@ public class EchoServer {
                     String msg = (params.get("msg") != null) ? params.get("msg").get(0).toLowerCase() : "";
 
                     if (msg.startsWith("exit")) {
-                        break;
+                        server.close();
                     } else {
                         if (msg.startsWith("hello")) {
                             output.write("Hello!".getBytes());
