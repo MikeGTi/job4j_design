@@ -1,0 +1,9 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<cat gender="false" age="3" name="Tom">
+	<owner phone="11-111"/>
+	<foods>
+		<food>meat</food>
+		<food>mouse</food>
+		<food>water</food>
+	</foods>
+</cat>
