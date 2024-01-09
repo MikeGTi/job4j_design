@@ -1,15 +1,15 @@
-package ru.job4j.serialization.json;
+package ru.job4j.io.serialization.json;
 
-public class Contact {
+public class ContactJson {
     private final String phone;
 
-    public Contact(String phone) {
+    public ContactJson(String phone) {
         this.phone = phone;
     }
 
     @Override
     public String toString() {
-        return "Contact{"
+        return "ContactXml{"
                 + "phone='" + phone + '\''
                 + '}';
     }

@@ -1,15 +1,17 @@
-package ru.job4j.serialization.json;
+package ru.job4j.io.serialization.xml;
+
+import ru.job4j.io.serialization.json.ContactJson;
 
 import java.util.Arrays;
 
-public class Dog {
+public class Cat {
     private final boolean gender;
     private final byte age;
     private final String name;
     private final String[] foodTypes;
-    private final Contact owner;
+    private final ContactJson owner;
 
-    public Dog(boolean gender, byte age, String name, String[] foodTypes, Contact owner) {
+    public Cat(boolean gender, byte age, String name, String[] foodTypes, ContactJson owner) {
         this.gender = gender;
         this.age = age;
         this.name = name;
@@ -19,7 +21,7 @@ public class Dog {
 
     @Override
     public String toString() {
-        return "Dog{"
+        return "Cat{"
                 + "gender=" + gender
                 + ", age=" + age
                 + ", name='" + name + '\''

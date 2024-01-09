@@ -1,11 +1,11 @@
-package ru.job4j.serialization.json;
+package ru.job4j.io.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class Main {
     public static void main(String[] args) {
-        final Person person = new Person(false, 30, new Contact("11-111"),
+        final Person person = new Person(false, 30, new ContactJson("11-111"),
                 new String[] {"Worker", "Married"});
 
         /* Convert Object person into json-string. */
@@ -28,7 +28,7 @@ public class Main {
         final Person personMod = gson.fromJson(personJson, Person.class);
         System.out.printf("Modified Json person: %s%n", personMod);
 
-        final Dog dog = new Dog(false, (byte) 3, "Jack", new String[] {"meat", "water", "carrot"}, new Contact("111-11-11"));
+        final Dog dog = new Dog(false, (byte) 3, "Jack", new String[] {"meat", "water", "carrot"}, new ContactJson("111-11-11"));
 
         /* Convert Object dog into json-string. */
         System.out.printf("%nJson dog: %s%n", gson.toJson(dog));
