@@ -10,7 +10,7 @@ public class Main {
 
         /* Convert Object person into json-string. */
         final Gson gson = new GsonBuilder().create();
-        System.out.println(gson.toJson(person));
+        System.out.printf("Json person: %s%n", gson.toJson(person));
 
         /* Create new json-string with modified data*/
         final String personJson =
@@ -26,12 +26,12 @@ public class Main {
                         + "}";
         /* Convert json-string into person Object */
         final Person personMod = gson.fromJson(personJson, Person.class);
-        System.out.println(personMod);
+        System.out.printf("Modified Json person: %s%n", personMod);
 
         final Dog dog = new Dog(false, (byte) 3, "Jack", new String[] {"meat", "water", "carrot"}, new Contact("111-11-11"));
 
         /* Convert Object dog into json-string. */
-        System.out.println(gson.toJson(dog));
+        System.out.printf("%nJson dog: %s%n", gson.toJson(dog));
 
         /* Create new json-string with modified data*/
         final String dogJson =
@@ -48,6 +48,6 @@ public class Main {
                 + "}";
         /* Convert json-string into dog Object */
         final Dog dogMod = gson.fromJson(dogJson, Dog.class);
-        System.out.println(dogMod);
+        System.out.printf("Modified Json dog: %s%n", dogMod);
     }
 }
