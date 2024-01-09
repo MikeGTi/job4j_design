@@ -19,7 +19,7 @@ public class ContactXml {
 
     @Override
     public String toString() {
-        return "ContactXml{"
+        return "Contact{"
                 + "phone='" + phone + '\''
                 + '}';
     }

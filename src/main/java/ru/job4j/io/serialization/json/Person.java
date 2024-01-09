@@ -15,12 +15,28 @@ public class Person {
         this.statuses = statuses;
     }
 
+    public boolean getSex() {
+        return sex;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public ContactJson getContactJSON() {
+        return contactJSON;
+    }
+
+    public String[] getStatuses() {
+        return statuses;
+    }
+
     @Override
     public String toString() {
         return "Person{"
                 + "sex=" + sex
                 + ", age=" + age
-                + ", contactJSON=" + contactJSON
+                + ", contact=" + contactJSON
                 + ", statuses=" + Arrays.toString(statuses)
                 + '}';
     }

@@ -7,9 +7,13 @@ public class ContactJson {
         this.phone = phone;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
     @Override
     public String toString() {
-        return "ContactXml{"
+        return "Contact{"
                 + "phone='" + phone + '\''
                 + '}';
     }

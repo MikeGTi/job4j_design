@@ -17,6 +17,26 @@ public class Dog {
         this.owner = owner;
     }
 
+    public boolean getGender() {
+        return gender;
+    }
+
+    public byte getAge() {
+        return age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String[] getFoodTypes() {
+        return foodTypes;
+    }
+
+    public ContactJson getOwner() {
+        return owner;
+    }
+
     @Override
     public String toString() {
         return "Dog{"
