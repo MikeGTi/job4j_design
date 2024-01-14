@@ -9,7 +9,7 @@ public class ResultFile {
     public static void main(String[] args) {
         try (PrintWriter out = new PrintWriter(
                 new BufferedOutputStream(
-                        new FileOutputStream("data/result.txt")
+                        new FileOutputStream("./src/data/result.txt")
                 ))) {
             out.println("Hello, world!");
             out.printf("%.2f%n", 1.5f);
