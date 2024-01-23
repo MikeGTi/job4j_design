@@ -1,0 +1,1 @@
+update cars set model = 'Corvette' where id = 1;
