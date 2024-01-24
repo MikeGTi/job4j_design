@@ -1,1 +1,0 @@
-insert into cars(manufacturer, model, area) values('Shevrolet', 'Tahoe', 'USA');
