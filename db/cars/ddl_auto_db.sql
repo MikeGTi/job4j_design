@@ -10,8 +10,7 @@ create table certificates(
                         model varchar(255),
                         car_type varchar(255),
                         release_year date,
-                        color varchar(255)
-);
+                        color varchar(255));
 
 create table cars_certs(
                         id serial primary key,
@@ -72,6 +71,7 @@ insert into owners(name, surname, car_id)
 			       ('Петя', 'Кротов', 2),
 				   ('Иннокентий', 'Смоктуновский', 3),
 				   ('Казимир', 'Козлевич', 4);
+
 /* update */
 update cars set model = 'Lumina' where id = 2;
 
