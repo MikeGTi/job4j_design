@@ -1,4 +1,3 @@
-/* insert */
 insert into role (role_name)
           values ('Admin'),
                  ('User'),
@@ -15,23 +14,6 @@ insert into "right" (right_name)
                  ('Read/Write'),
                  ('Read');
 
-insert into "comment" (stem)
-            values ('TestComment1'),
-                   ('TestComment2'),
-                   ('TestComment3'),
-                   ('TestComment4'),
-                   ('TestComment5'),
-                   ('TestComment6');
-
-insert into attachment (filepath)
-          values ('..\TestFolder\testFile1.txt'),
-                 ('..\TestFolder\testFile2.txt'),
-                 ('..\TestFolder\testFile3.txt'),
-                 ('..\TestFolder\testFile4.txt'),
-                 ('..\TestFolder\testFile5.txt'),
-                 ('..\TestFolder\testFile6.txt'),
-                 ('..\TestFolder\testFile7.txt');
-
 insert into category (category_name)
           values ('Hard'),
                  ('Middle'),
@@ -44,12 +26,29 @@ insert into state (state_name)
                  ('Done'),
                  ('Postponed');
 
-insert into item (description, user_id, comment_id, attachment_id, category_id, state_id)
-          values ('TestTask1', 1, 1, 1, 1, 1),
-                 ('TestTask2', 2, 2, 2, 3, 2),
-                 ('TestTask3', 2, 3, 3, 3, 3),
-                 ('TestTask4', 3, 4, 4, 4, 4),
-                 ('TestTask5', 4, 5, 5, 1, 2);
+insert into item (description, user_id,  category_id, state_id)
+          values ('TestTask1',  1, 1, 1),
+                 ('TestTask2',  2, 3, 2),
+                 ('TestTask3',  3, 3, 3),
+                 ('TestTask4',  4, 4, 4),
+                 ('TestTask5',  3, 1, 2);
+
+insert into "comment" (stem, item_id)
+        values ('TestComment1', 1),
+               ('TestComment2', 2),
+               ('TestComment3', 3),
+               ('TestComment4', 3),
+               ('TestComment5', 4),
+               ('TestComment6', 5);
+
+insert into attachment (filepath, item_id)
+        values ('..\TestFolder\testFile1.txt', 1),
+               ('..\TestFolder\testFile2.txt', 2),
+               ('..\TestFolder\testFile3.txt', 3),
+               ('..\TestFolder\testFile4.txt', 4),
+               ('..\TestFolder\testFile5.txt', 5),
+               ('..\TestFolder\testFile6.txt', 5),
+               ('..\TestFolder\testFile7.txt', 1);
 
 insert into role_right (role_id, right_id)
         values (1, 1),

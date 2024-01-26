@@ -1,4 +1,3 @@
-/* create */
 create table role (
                       id serial primary key,
                       role_name varchar(255)
@@ -9,16 +8,6 @@ create table "user" (
                       user_name varchar(255),
                       surname varchar(255),
                       role_id int references role(id)   /* many-to-one */
-);
-
-create table "comment" (
-                           id serial primary key,
-                           stem text
-);
-
-create table "attachment" (
-                          id serial primary key,
-                          filepath varchar(1020)
 );
 
 create table "category" (
@@ -35,10 +24,20 @@ create table item (
                       id serial primary key,
                       description varchar(255),
                       user_id int references "user"(id),             /* many-to-one */
-                      comment_id int references "comment"(id),       /* many-to-one */
-                      attachment_id int references "attachment"(id), /* many-to-one */
                       category_id int references category(id),       /* many-to-one */
                       state_id int references state(id)              /* many-to-one */
+);
+
+create table "comment" (
+                           id serial primary key,
+                           stem text,
+                           item_id int references item(id)       /* one-to-many */
+);
+
+create table "attachment" (
+                              id serial primary key,
+                              filepath varchar(1020),
+                              item_id int references item(id)       /* one-to-many */
 );
 
 create table "right" (
