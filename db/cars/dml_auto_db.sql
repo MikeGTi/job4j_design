@@ -58,7 +58,7 @@ insert into engines(manufacturer, model, volume, power)
             values ('Chevrolet', 'W12', 5.7, 540),
                    ('Chevrolet', 'V6', 4.5, 360),
                    ('VAZ', '1100', 1.1, 70),
-                   ('KAMAZ', '4', 4.9, 180);
+                   ('KAMAZ', '43049', 4.9, 180);
 
 insert into engines_cars(engine_id, car_id)
             values (1, 1),
@@ -81,4 +81,18 @@ select * from engines;
 select * from certificates;
 
 /* delete */
-delete from cars where id = 1;
+/* delete from cars where id = 1; */
+
+select cars.id as "cars.id", cars.manufacturer as "cars.manufacturer", cars.model as "cars.model", cars.country as "cars.country",
+       eng.manufacturer as "engine.manufacturer", eng.model as "engine.model", eng.volume as "eng.volume", eng.power as "eng.power" from cars
+            join engines_cars ec on cars.id = ec.car_id
+            join engines eng on ec.engine_id = eng.id;
+
+select cars.id as "cars.id", cars.manufacturer as "cars.manufacturer", cars.model as "cars.model", cars.country as "cars.country",
+       own.id as "owner.id", own.name as "owner.name", own.surname as "owner.surname" from cars
+            join owners own on cars.id = own.car_id;
+
+select cars.id as "cars.id", cars.manufacturer as "cars.manufacturer", cars.model as "cars.model", cars.country as "cars.country",
+       cert.car_type as "cert.cars_type", cert.release_year as "cert.cars_year", cert.color as "cert.cars_color" from cars
+                 join cars_certs csert on cars.id = csert.car_id
+                 join certificates cert on csert.cert_id = cert.id;
