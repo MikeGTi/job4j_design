@@ -19,6 +19,12 @@ insert into teens(name, is_man)
    Используя cross join составить все возможные разнополые пары.
    Исключите дублирование пар вида Вася-Маша и Маша-Вася. */
 
+/* cross join all */
+/* variant 0 */
+select t1.name, t2.name from teens t1 cross join teens t2
+where t1.is_man < t2.is_man
+order by t1.name;
+
 /* variant I */
 select distinct
     case when t1.name <= t2.name then t1.name else t2.name end name1,
@@ -31,4 +37,3 @@ select t1.name, t2.name from teens t1 cross join teens t2
 where not t1.is_man = t2.is_man
       and t1.name <= t2.name
 order by t1.name;
-
