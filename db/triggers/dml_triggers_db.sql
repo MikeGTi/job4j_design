@@ -118,7 +118,7 @@ $$
     LANGUAGE 'plpgsql';
 
 create or replace trigger b_trigger_add_tax
-    after insert on products
+    before insert on products
     for each row execute procedure b_add_tax_rf_for_products_price();
 
 drop trigger b_trigger_add_tax on products;
