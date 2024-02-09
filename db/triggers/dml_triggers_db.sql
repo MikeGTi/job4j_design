@@ -76,7 +76,7 @@ drop function tax();
 /* My triggers */
 /* Statement level trigger */
 /* 1)  Должен срабатывать после вставки данных, для любого товара и просто насчитывать налог на товар */
-create or replace function a_add_tax_rf_for_products_price()
+create or replace function a_add_tax_rf_price()
     returns trigger as
     $$
     BEGIN
@@ -91,10 +91,10 @@ LANGUAGE 'plpgsql';
 create or replace trigger a_trigger_add_tax
     after insert on products
     referencing new table as inserted
-    for each statement execute procedure a_add_tax_rf_for_products_price();
+    for each statement execute procedure a_add_tax_rf_price();
 
 drop trigger a_trigger_add_tax on products;
-drop function a_add_tax_rf_for_products_price();
+drop function a_add_tax_rf_price();
 
 insert into products (name, producer, count, price)
 values ('product_1', 'producer_1', 3, 100),
@@ -107,7 +107,7 @@ select * from products;
 
 /* Row level trigger */
 /* 2) Должен срабатывать до вставки данных и насчитывать налог на товар (нужно прибавить налог к цене товара). */
-create or replace function b_add_tax_rf_for_products_price()
+create or replace function b_add_tax_rf_price()
     returns trigger as
 $$
 BEGIN
@@ -119,10 +119,10 @@ $$
 
 create or replace trigger b_trigger_add_tax
     before insert on products
-    for each row execute procedure b_add_tax_rf_for_products_price();
+    for each row execute procedure b_add_tax_rf_price();
 
 drop trigger b_trigger_add_tax on products;
-drop function b_add_tax_rf_for_products_price();
+drop function b_add_tax_rf_price();
 
 insert into products (name, producer, count, price)
 values ('product_1', 'producer_1', 3, 100),
