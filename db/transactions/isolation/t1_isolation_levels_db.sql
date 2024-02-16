@@ -6,7 +6,7 @@
 
 set transaction isolation level read committed;  -- got error
 set transaction isolation level repeatable read; -- got error
-set transaction isolation level serializable;    -- can't
+set transaction isolation level serializable;    -- got error
 
 start transaction isolation level serializable;
 rollback;
