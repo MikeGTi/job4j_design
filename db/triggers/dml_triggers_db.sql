@@ -171,3 +171,5 @@ values ('product_1', 'producer_1', 3, 100),
 
 select * from products;
 select * from history_of_price;
+
+alter sequence products_id_seq restart with 1;
