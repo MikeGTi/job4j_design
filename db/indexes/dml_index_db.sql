@@ -1,9 +1,9 @@
 create table people
 (
     id         serial primary key,
-    first_name VARCHAR(50),
-    last_name  VARCHAR(50),
-    phone      VARCHAR(50)
+    first_name varchar(50),
+    last_name  varchar(50),
+    phone      varchar(50)
 );
 
 
