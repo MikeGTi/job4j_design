@@ -25,7 +25,7 @@ class SettingsTest {
             settings.load(io);
         }
         String value = settings.getValue("url");
-        assertThat(value).isEqualTo("jdbc:postgresql://localhost:5432/exercises_db");
+        assertThat(value).isEqualTo("jdbc:postgresql://localhost:5432/jdbc_tasks_db");
     }
 
     @Test
