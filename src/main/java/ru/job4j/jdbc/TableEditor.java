@@ -1,7 +1,5 @@
 package ru.job4j.jdbc;
 
-import ru.job4j.service.Settings;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -92,7 +90,7 @@ public class TableEditor implements AutoCloseable {
 
     public static void main(String[] args) throws Exception {
         Properties appProperties = new Properties();
-        try (InputStream in = Settings.class.getClassLoader().getResourceAsStream("app.properties")) {
+        try (InputStream in = TableEditor.class.getClassLoader().getResourceAsStream("app.properties")) {
             appProperties.load(in);
         } catch (IOException e) {
             e.printStackTrace();

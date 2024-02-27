@@ -15,7 +15,7 @@ public class StatementDemo {
         try (InputStream io = classLoader.getResourceAsStream("app.properties")) {
             settings.load(io);
         }
-        Class.forName(settings.getValue("driver")); // system registration
+        Class.forName(settings.getValue("driver"));
         String url = settings.getValue("url");
         String login = settings.getValue("login");
         String password = settings.getValue("password");
