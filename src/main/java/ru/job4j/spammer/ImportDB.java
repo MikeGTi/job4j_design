@@ -46,10 +46,10 @@ public class ImportDB {
             throw new IllegalArgumentException("User not found");
         }
         String[] sublines = data.split(";", 2);
-        if ("".equals(sublines[0])) {
+        if (sublines[0].isBlank()) {
             throw new IllegalArgumentException("User name not found");
         }
-        if ("".equals(sublines[1])) {
+        if (sublines[1].isBlank()) {
             throw new IllegalArgumentException("User e-mail not found");
         }
         return sublines;
