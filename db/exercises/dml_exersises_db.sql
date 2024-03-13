@@ -97,21 +97,21 @@ create table if not exists airplanes(
     capacity int
 );
 
-insert into airplanes values(1, 'Airbus-320-200', 5700, 180);
-insert into airplanes values(2, 'Airbus-321-200', 5600, 220);
-insert into airplanes values(3, 'Airbus-319-100', 6700, 150);
-insert into airplanes values(4, 'Cessna 208 Caravan', 1200, 13);
-insert into airplanes values(5, 'Boeing 777-300', 11100, 450);
-insert into airplanes values(6, 'Boeing 767-300', 7900, 350);
-insert into airplanes values(7, 'Boeing 737-300', 4200, 145);
-insert into airplanes values(8, 'Sukhoi SuperJet-100', 3000, 98);
-insert into airplanes values(9, 'Bombardier CRJ-200', 2700, 50);
+insert into airplanes1 values(1, 'Airbus-320-200', 5700, 180);
+insert into airplanes1 values(2, 'Airbus-321-200', 5600, 220);
+insert into airplanes1 values(3, 'Airbus-319-100', 6700, 150);
+insert into airplanes1 values(4, 'Cessna 208 Caravan', 1200, 13);
+insert into airplanes1 values(5, 'Boeing 777-300', 11100, 450);
+insert into airplanes1 values(6, 'Boeing 767-300', 7900, 350);
+insert into airplanes1 values(7, 'Boeing 737-300', 4200, 145);
+insert into airplanes1 values(8, 'Sukhoi SuperJet-100', 3000, 98);
+insert into airplanes1 values(9, 'Bombardier CRJ-200', 2700, 50);
 
-select * from airplanes where model like 'Airbus%'; -- % - string
-select * from airplanes where model like '___b%'; -- '_' - any symbol
-select * from airplanes where model not like all (array['Airbus%', 'Boeing%']);
-select * from airplanes where model not like 'Airbus%' and model not like 'Boeing%';
-select * from airplanes where model not like 'Airbus%' and model not like 'Boeing%' limit 1;
+select * from airplanes1 where model like 'Airbus%'; -- % - string
+select * from airplanes1 where model like '___b%'; -- '_' - any symbol
+select * from airplanes1 where model not like all (array['Airbus%', 'Boeing%']);
+select * from airplanes1 where model not like 'Airbus%' and model not like 'Boeing%';
+select * from airplanes1 where model not like 'Airbus%' and model not like 'Boeing%' limit 1;
 
 /* 3. Join */
 create table if not exists colors (
@@ -382,3 +382,129 @@ insert into films values (1, 'Resurrection Silverado', 117),
 /* films with equal length */
 select f1.title, f2.title, f1.length from films f1
     inner join films f2 on f1.length = f2.length and not f1.title = f2.title;
+
+/*31. GROUP BY, WHERE и HAVING 1*/
+/*Необходимо определить авиакомпании, у которых с '2023-01-05' по '2023-01-10'
+  будет выполнено более одного рейса. Необходимо вывести название авиакомпании
+  и количество рейсов. Группировка будет по названию авиакомпании.*/
+
+create table if not exists airlines
+(
+    id           INT PRIMARY KEY,
+    name         VARCHAR(255),
+    country      VARCHAR(255),
+    headquarters VARCHAR(255)
+);
+
+create table if not exists airplanes
+(
+    id               INT PRIMARY KEY,
+    model            VARCHAR(255),
+    manufacturer     VARCHAR(255),
+    seating_capacity INT
+);
+
+create table if not exists flights
+(
+    id              INT PRIMARY KEY,
+    airline_id      INT REFERENCES airlines (id),
+    airplane_id     INT REFERENCES airplanes (id),
+    departure_date  DATE,
+    flight_duration DECIMAL(5, 2)
+);
+
+insert into airlines (id, name, country, headquarters)
+values (1, 'Lufthansa', 'Germany', 'Cologne'),
+       (2, 'Delta Air Lines', 'USA', 'Atlanta'),
+       (3, 'Emirates', 'UAE', 'Dubai'),
+       (4, 'Air France', 'France', 'Paris'),
+       (5, 'Singapore Airlines', 'Singapore', 'Singapore');
+
+insert into airplanes (id, model, manufacturer, seating_capacity)
+values (1, '737', 'Boeing', 150),
+       (2, 'A320', 'Airbus', 170),
+       (3, '777', 'Boeing', 300),
+       (4, 'A380', 'Airbus', 555),
+       (5, '747', 'Boeing', 416),
+       (6, 'E190', 'Embraer', 100),
+       (7, 'A350', 'Airbus', 440),
+       (8, 'CRJ900', 'Bombardier', 90),
+       (9, 'MD-11', 'McDonnell Douglas', 290),
+       (10, '72', 'ATR', 70);
+
+insert into flights (id, airline_id, airplane_id, departure_date, flight_duration)
+values (1, 1, 1, '2023-01-01', 2.5),
+       (2, 2, 3, '2023-01-02', 3.0),
+       (3, 3, 4, '2023-01-03', 8.5),
+       (4, 4, 2, '2023-01-04', 2.0),
+       (5, 5, 5, '2023-01-05', 7.5),
+       (6, 1, 6, '2023-01-06', 1.5),
+       (7, 2, 7, '2023-01-07', 4.0),
+       (8, 3, 8, '2023-01-08', 6.5),
+       (9, 4, 9, '2023-01-09', 5.0),
+       (10, 5, 10, '2023-01-10', 3.5),
+       (11, 1, 1, '2023-01-11', 2.0),
+       (12, 2, 2, '2023-01-12', 1.0),
+       (13, 3, 3, '2023-01-13', 4.5),
+       (14, 4, 4, '2023-01-14', 2.5),
+       (15, 5, 5, '2023-01-15', 6.0),
+       (16, 3, 3, '2023-03-16', 4.5);
+
+select * from airlines a
+    inner join flights f on f.airline_id = f.id;
+
+select * from flights f
+    inner join airlines a on a.id = f.airline_id;
+
+/* 31. Определить авиакомпании, у которых с '2023-01-05' по '2023-01-10' будет выполнено
+   более одного рейса. Необходимо вывести название авиакомпании и количество рейсов.*/
+select j.name, count(j.name)  from (select * from flights f
+                                        inner join airlines a on f.airline_id = a.id) as j
+where j.departure_date between symmetric '2023-01-05' and '2023-01-10'
+group by j.name
+having count(j.name) > 1;
+
+/* 32. Определите среднюю продолжительность полетов для каждого производителя самолетов,
+   в результаты должны попасть только те производители у кого средняя продолжительность
+   больше 4. Необходимо вывести производителя и среднюю продолжительность полета.*/
+select j2.manufacturer, avg(j2.flight_duration) from ((select * from flights f
+                                                         inner join airlines a on a.id = f.airline_id) as j1
+                                                         inner join airplanes ap on ap.id = j1.airplane_id) as j2
+group by j2.manufacturer
+having avg(j2.flight_duration) > 4;
+
+/* 33. Подсчитайте общее количество рейсов и среднюю длительность полетов для каждой авиакомпании,
+   в результаты должны попасть только те рейсы средняя продолжительность которых больше 3.
+   Необходимо вывести название авиакомпании, общее число рейсов, среднюю продолжительность полета.*/
+select j2.name, count(j2.name), avg(j2.flight_duration) from ((select * from flights f
+                                                 inner join airlines a on a.id = f.airline_id) as j1
+                                                 inner join airplanes ap on ap.id = j1.airplane_id) as j2
+group by j2.name
+having avg(j2.flight_duration) > 3;
+
+/* 34. Определите авиакомпанию с наибольшим количеством самолетов. Необходимо вывести название
+   авиакомпании и общее число самолетов.*/
+/* base */
+select * from flights f
+                  inner join airlines a on a.id = f.airline_id
+                  inner join airplanes ap on ap.id = airplane_id;
+
+/* I variant, cost 63 */
+explain
+    select j2.name, count(j2.airplane_id) from ((select * from flights f
+            inner join airlines a on a.id = f.airline_id) as j1
+            inner join airplanes ap on ap.id = j1.airplane_id) as j2
+group by j2.name
+order by count(j2.airplane_id) desc
+limit 1;
+
+/* II variant, cost 126 */
+explain
+    select name, c as count from (select j2.name, count(j2.airplane_id) c from ((select * from flights f
+                                               inner join airlines a on a.id = f.airline_id) as j1
+                                               inner join airplanes ap on ap.id = j1.airplane_id) as j2
+                              group by j2.name) as j3
+group by name, count
+having j3.c = (select max(c) from (select count(airplane_id) c from (select * from flights f
+                           inner join airlines a on a.id = f.airline_id
+                           inner join airplanes ap on ap.id = airplane_id) as m1 group by name) as m1);

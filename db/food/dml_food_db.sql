@@ -77,7 +77,7 @@ group by "type_name", prd.type_name;
 /* 6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО" */
 select * from (select product.id, product.name, price, expired_date, type.name as "type_name" from product
                    join type on product.type_id = type.id) as "prd"
- where prd.type_name iLike '%Молоко%' or prd.type_name iLike 'Сыр';
+where prd.type_name iLike '%Молоко%' or prd.type_name iLike 'Сыр';
 
 /* 7. Написать запрос, который выводит тип продуктов, которых осталось меньше 4 штук. */
 select * from (select product.id, product.name, price, expired_date, type.name as "type_name" from product
@@ -98,3 +98,10 @@ order by type_name;
 /* 8. Вывести все продукты и их тип. */
 select prd.name, type_name from (select product.id, product.name, price, expired_date, type.name as "type_name" from product
                                     join type on product.type_id = type.id) as "prd";
+
+/* собрать продукты по типам */
+select type_name as "Product type", string_agg(jp.name, ';' || chr(10)) as "Products", count(jp.name) as "Products count" from
+    (select p.id, p.name, price, expired_date, t.name as "type_name" from product p
+                                join type t on p.type_id = t.id) as jp
+group by (jp.type_name)
+order by jp.type_name;
