@@ -125,8 +125,14 @@ create table if not exists actions (
        color_id int references colors(id)
 );
 
-insert into colors values(1, 'red');
-insert into colors values(2, 'black');
+insert into colors values
+            (1, 'red'),
+            (2, 'black'),
+            (3, 'green'),
+            (4, 'yellow'),
+            (5, 'blue'),
+            (6, 'white'),
+            (7, 'brown');
 
 insert into actions values (1, 'draw red', 1);
 insert into actions values (2, 'use black hole', 2);
@@ -148,6 +154,22 @@ select id, name, number, description, color_id from colors
 
 select * from colors c
     natural join actions a;
+
+/* https://github.com/mnickw/UGMK_Trans_test/blob/main/README.md */
+/* Необходимо написать SQL запрос, который выведет все возможные сочетания для значений переменной, где n = 7 и k = 4.
+   Пример: Табличная переменная @Colors:*/
+with colorIdNameTable as (
+    select ROW_NUMBER() over (order by c1.name) as id, c1.name from colors as c1
+)
+
+select c1.name as name1, c2.name as name2, c3.name as name3, c4.name as name4
+from colorIdNameTable c1
+         join colorIdNameTable c2
+              on c1.id < c2.id
+         join colorIdNameTable c3
+              on c2.id < c3.id
+         join colorIdNameTable c4
+              on c3.id < c4.id;
 
 
 create table if not exists cars (
@@ -490,7 +512,7 @@ select * from flights f
                   inner join airplanes ap on ap.id = airplane_id;
 
 /* I variant, cost 63 */
-explain
+explain analyse
     select j2.name, count(j2.airplane_id) from ((select * from flights f
             inner join airlines a on a.id = f.airline_id) as j1
             inner join airplanes ap on ap.id = j1.airplane_id) as j2
@@ -499,8 +521,8 @@ order by count(j2.airplane_id) desc
 limit 1;
 
 /* II variant, cost 126 */
-explain
-    select name, c as count from (select j2.name, count(j2.airplane_id) c from ((select * from flights f
+explain analyse
+select name, c as count from (select j2.name, count(j2.airplane_id) c from ((select * from flights f
                                                inner join airlines a on a.id = f.airline_id) as j1
                                                inner join airplanes ap on ap.id = j1.airplane_id) as j2
                               group by j2.name) as j3
@@ -508,3 +530,69 @@ group by name, count
 having j3.c = (select max(c) from (select count(airplane_id) c from (select * from flights f
                            inner join airlines a on a.id = f.airline_id
                            inner join airplanes ap on ap.id = airplane_id) as m1 group by name) as m1);
+
+/* 41. GROUP BY, WHERE и HAVING 11 */
+create table if not exists products
+(
+    id    SERIAL PRIMARY KEY,
+    name  VARCHAR(255)   NOT NULL,
+    price DECIMAL(10, 2) NOT NULL
+);
+
+create table if not exists customers
+(
+    id   SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+create table if not exists sales
+(
+    id     SERIAL PRIMARY KEY,
+    product_id  INT REFERENCES products (id),
+    customer_id INT REFERENCES customers (id),
+    amount      INT NOT NULL,
+    sale_year   INT,
+    sale_month  INT
+);
+
+insert into products (name, price)
+values ('Product A', 10.99),
+       ('Product B', 20.49),
+       ('Product C', 15.75),
+       ('Product D', 8.99),
+       ('Product E', 12.50),
+       ('Product F', 18.99),
+       ('Product G', 22.00);
+
+insert into customers (name)
+values ('Customer 1'),
+       ('Customer 2'),
+       ('Customer 3'),
+       ('Customer 4'),
+       ('Customer 5');
+
+insert into sales (product_id, customer_id, amount, sale_year, sale_month)
+values (1, 1, 2, 2023, 1),
+       (2, 2, 1, 2023, 2),
+       (3, 3, 3, 2023, 3),
+       (4, 4, 4, 2023, 4),
+       (5, 5, 2, 2023, 5),
+       (6, 1, 1, 2023, 4),
+       (7, 2, 3, 2023, 3),
+       (1, 3, 2, 2023, 1),
+       (2, 4, 4, 20235, 5),
+       (3, 5, 1, 2023, 2),
+       (4, 1, 3, 2023, 1),
+       (5, 2, 2, 2023, 3),
+       (6, 3, 1, 2023, 5),
+       (7, 4, 4, 2023, 4),
+       (1, 5, 3, 2023, 2),
+       (2, 1, 2, 2023, 1),
+       (3, 2, 1, 2023, 3);
+
+select j1.id "id", j1.name "name" from (select p.id "id", p.name "name" from sales s
+                                                                   join products p on s.product_id = p.id
+                                                                   join customers c on s.customer_id = c.id
+                                                                where s.sale_year = 2023) j1
+group by j1.id, j1.name
+having  count(name) = 2;

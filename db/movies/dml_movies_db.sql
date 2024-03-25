@@ -75,6 +75,13 @@ having 2012 <= any(array_agg(release_year));
    у которых есть более 3 режиссеров и средний бюджет превышает 5 миллионов.
    В результатах запроса должно быть отражено название компании и средний бюджет.
    Группировка будет по названию кинокомпании*/
+select fc.name "name", avg(budget) from movies m
+                       join directors d on m.director_id = d.id
+                       join film_companies fc on fc.id = m.company_id
+group by fc.name
+having count(director_id) > 3 and avg(budget) > 5000000
+order by fc.name;
+
 select company, sum(budget) budget from (select fc.name company, m.budget, d.name director from movies m
                                                                            join directors d on m.director_id = d.id
                                                                            join film_companies fc on fc.id = m.company_id) as j1
@@ -113,3 +120,7 @@ select fc.name, avg_bdt from (select company_id, avg(budget) avg_bdt from movies
 group by company_id
 having avg(budget) > 5000000) m
 join film_companies fc on m.company_id = fc.id;
+
+with avg_budget as (select company_id, avg(budget) from movies
+                    group by company_id order by avg(budget) desc)
+select * from avg_budget;

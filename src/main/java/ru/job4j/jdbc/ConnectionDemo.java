@@ -27,7 +27,4 @@ public class ConnectionDemo {
             System.out.println(metaData.getURL());
         }
     }
-
-
-
 }

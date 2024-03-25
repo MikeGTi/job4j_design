@@ -38,7 +38,18 @@ select p.name, c.name from person p join company c on p.company_id = c.id;
 
 /* Выбрать название компании с максимальным количеством человек + количество человек в этой компании.
 Нужно учесть, что таких компаний может быть несколько. */
+/* I  cost 72.24, time 0.095 */
+explain analyse
 select * from (select company, count(person) count_person from (select p.name person, c.name company from person p join company c on p.company_id = c.id) j1
-group by company) t1
-where count_person = (select max(t2.count_person) from (select company, count(person) count_person from (select p.name person, c.name company from person p join company c on p.company_id = c.id) j1
+               group by company) t1
+where count_person = (select max(t2.count_person) from (select count(person) count_person from (select p.name person, c.name company from person p join company c on p.company_id = c.id) j1
                                                         group by company) t2);
+
+/* II  cost 72.24, time 0.137 */
+explain analyse
+select * from (select company, count(person) count_person from (select p.name person, c.name company from person p join company c on p.company_id = c.id) j1
+               group by company) t1
+where count_person = (select t2.count_person from (select count(person) count_person from (select p.name person, c.name company from person p join company c on p.company_id = c.id) j1
+                                                        group by company) t2
+                        order by count_person desc
+                        limit 1);
