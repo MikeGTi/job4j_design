@@ -21,6 +21,9 @@ public class GCDemo {
         for (int i = 0; i < 10000; i++) {
             new Person(i, "N" + i);
         }
+        /* uncomment for more info
+        * info();
+        * */
         System.gc();
         info();
     }
