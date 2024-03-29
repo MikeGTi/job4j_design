@@ -1,0 +1,5 @@
+String.format -> String.join
+Static collections fields -> non-static
+POJO:
+    add methods equals and hashCode
+    remove methods finalize
