@@ -71,6 +71,7 @@ public class Emulator {
                 if (emulator.validateFilename(filename)) {
                     System.out.println(FILE_TEXT);
                     System.out.println(emulator.cache.get(filename));
+                    System.out.println(FILE_INPUT_ADDED);
                 } else {
                     System.out.println(FILE_ERROR);
                 }
