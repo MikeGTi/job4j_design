@@ -55,8 +55,8 @@ values ('Movie 1', 2022, 120, 5000000, 1, 1),
 
 /* Base join */
 select * from movies
-            join directors d on movies.director_id = d.id
-            join film_companies fc on fc.id = movies.company_id;
+    join directors d on movies.director_id = d.id
+    join film_companies fc on fc.id = movies.company_id;
 
 /* 36. Необходимо вывести суммарный бюджет и количество фильмов для каждой кинокомпании,
    у которых хотя бы один фильм старше 2012 года.
@@ -71,15 +71,18 @@ where release_year > 2012
 group by name
 having 2012 <= any(array_agg(release_year));
 
-/* Необходимо вывести средний бюджет фильмов, выпущенных каждой кинокомпанией,
-   у которых есть более 3 режиссеров и средний бюджет превышает 5 миллионов.
-   В результатах запроса должно быть отражено название компании и средний бюджет.
-   Группировка будет по названию кинокомпании*/
-select fc.name "name", avg(budget) from movies m
-                       join directors d on m.director_id = d.id
-                       join film_companies fc on fc.id = m.company_id
+/* 37. Необходимо вывести средний бюджет фильмов, выпущенных каждой кинокомпанией,
+       у которых есть более 3 режиссеров и средний бюджет превышает 5 миллионов.
+       В результатах запроса должно быть отражено название компании и средний бюджет.
+       Группировка будет по названию кинокомпании */
+select fc.name "name",
+       avg(m.budget)
+from movies m
+    join directors d on m.director_id = d.id
+    join film_companies fc on fc.id = m.company_id
 group by fc.name
-having count(director_id) > 3 and avg(budget) > 5000000
+having count(director_id) > 3
+   and avg(budget) > 5000000
 order by fc.name;
 
 select company, sum(budget) budget from (select fc.name company, m.budget, d.name director from movies m
