@@ -1,65 +1,41 @@
 package ru.job4j.kiss.fool;
 
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Fool {
 
-    private int endsAt = 100;
+    static class Step {
+        private final int num;
 
-    public Fool(int endsAt) {
-        this.endsAt = endsAt;
+        public Step(int num) {
+            this.num = num;
+        }
+
+        public String value() {
+            String rsl = String.valueOf(num);
+            if (num % 3 == 0 && num % 5 == 0) {
+                rsl = "FizzBuzz";
+            } else if (num % 3 == 0) {
+                rsl = "Fizz";
+            } else if (num % 5 == 0) {
+                rsl = "Buzz";
+            }
+            return rsl;
+        }
     }
 
     public static void main(String[] args) {
-        Fool fool = new Fool(100);
         System.out.println("Game FizzBuzz.");
         var startAt = 1;
         var input = new Scanner(System.in);
-        while (startAt < fool.endsAt) {
-            fool.printStep(startAt);
-            startAt++;
-            var answer = input.nextLine();
-            if (!fool.validate(startAt, answer)) {
-                System.out.println("Error. Starts new.");
+        while (startAt < 100) {
+            System.out.println(new Step(startAt++).value());
+            if (!input.nextLine().equals(new Step(startAt).value())) {
+                System.out.println("Error. Starts new game.");
                 startAt = 0;
             }
             startAt++;
         }
         System.out.println("You win!");
-    }
-    
-    public void printStep(int index) {
-        if (index % 3 == 0 && index % 5 == 0) {
-            System.out.println("FizzBuzz");
-        } else if (index % 3 == 0) {
-            System.out.println("Fizz");
-        } else if (index % 5 == 0) {
-            System.out.println("Buzz");
-        } else {
-            System.out.println(index);
-        }
-    }
-    
-    public boolean validate(int index, String answer) {
-        boolean valid = true;
-        if (index % 3 == 0 && index % 5 == 0) {
-            if (!"FizzBuzz".equals(answer)) {
-                valid = false;
-            }
-        } else if (index % 3 == 0) {
-            if (!"Fizz".equals(answer)) {
-                valid = false;
-            }
-        } else if (index % 5 == 0) {
-            if (!"Buzz".equals(answer)) {
-                valid = false;
-            }
-        } else {
-            if (!Objects.equals(String.valueOf(index), answer)) {
-                valid = false;
-            }
-        }
-        return valid;
     }
 }
