@@ -35,7 +35,7 @@ public class FoolTest {
     /* The program ends with printing "You win!" if the user successfully completes the game. */
     @Test
     public void whenProgramEndsThanPrintsYouWin() {
-        // Create a ByteArrayOutputStream to capture the output
+        /* Create a ByteArrayOutputStream to capture the output */
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
 
