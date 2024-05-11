@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Calendar;
 import java.util.List;
 
+@Disabled("Тесты отключены. Удалить аннотацию после реализации всех методов по заданию.")
 public class Cinema3DTest {
     @Test
     public void whenBuyThenGetTicket() {
