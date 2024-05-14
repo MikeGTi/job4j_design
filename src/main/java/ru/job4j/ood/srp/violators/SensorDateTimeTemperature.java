@@ -1,4 +1,4 @@
-package ru.job4j.ood.srp.erroneous;
+package ru.job4j.ood.srp.violators;
 
 import java.util.Date;
 

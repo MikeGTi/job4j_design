@@ -1,4 +1,4 @@
-package ru.job4j.ood.srp.erroneous;
+package ru.job4j.ood.srp.violators;
 
 /*  Нарушен Single Responsibility Principe (SRP),
  *  так как класс имеет три причины для изменения -

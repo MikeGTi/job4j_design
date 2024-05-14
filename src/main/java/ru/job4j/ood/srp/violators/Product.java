@@ -1,4 +1,4 @@
-package ru.job4j.ood.srp.erroneous;
+package ru.job4j.ood.srp.violators;
 
 /* Нарушен Single Responsibility Principe (SRP), т.к. класс отвечает за две сущности:
  *  работа с количеством товаров на складе и
