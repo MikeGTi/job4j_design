@@ -16,7 +16,9 @@ public class SmtpMailer {
     }
 
     public void sendMessage(String message) {
-        // отсылка сообщения
+        /*
+        * send message code
+        * */
         logger.log(String.format("Отправлено '{%s}'", message));
     }
 }
