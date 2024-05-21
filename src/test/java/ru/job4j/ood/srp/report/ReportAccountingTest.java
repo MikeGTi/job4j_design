@@ -22,16 +22,13 @@ class ReportAccountingTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         InMemoryCurrencyConverter converter = new InMemoryCurrencyConverter();
         store.add(worker);
-        Report accounting = new ReportAccounting(store, parser, converter);
-        StringBuilder expected = new StringBuilder()
-                .append("Name; Hired; Fired; Salary ($);")
-                .append(System.lineSeparator())
-                .append(worker.getName()).append(" ")
-                .append(parser.parse(worker.getHired())).append(" ")
-                .append(parser.parse(worker.getFired())).append(" ")
-                .append(converter.convert(Currency.RUB, worker.getSalary(), Currency.USD))
-                .append(System.lineSeparator());
-        assertThat(accounting.generate(employee -> true)).isEqualTo(expected.toString());
+        IReport accounting = new ReportAccounting(store, parser, converter);
+        String expected = "Name; Hired; Fired; Salary ($);" + System.lineSeparator()
+                + worker.getName() + " "
+                + parser.parse(worker.getHired()) + " "
+                + parser.parse(worker.getFired()) + " "
+                + converter.convert(Currency.RUB, worker.getSalary(), Currency.USD) + System.lineSeparator();
+        assertThat(accounting.generate(employee -> true)).isEqualTo(expected);
     }
 
     @Test
@@ -46,25 +43,20 @@ class ReportAccountingTest {
         store.add(worker1);
         store.add(worker3);
         store.add(worker2);
-        Report accounting = new ReportAccounting(store, parser, converter);
-        StringBuilder expected = new StringBuilder()
-                .append("Name; Hired; Fired; Salary ($);")
-                .append(System.lineSeparator())
-                .append(worker1.getName()).append(" ")
-                .append(parser.parse(worker1.getHired())).append(" ")
-                .append(parser.parse(worker1.getFired())).append(" ")
-                .append(converter.convert(Currency.RUB, worker1.getSalary(), Currency.USD))
-                .append(System.lineSeparator())
-                .append(worker3.getName()).append(" ")
-                .append(parser.parse(worker3.getHired())).append(" ")
-                .append(parser.parse(worker3.getFired())).append(" ")
-                .append(converter.convert(Currency.RUB, worker3.getSalary(), Currency.USD))
-                .append(System.lineSeparator())
-                .append(worker2.getName()).append(" ")
-                .append(parser.parse(worker2.getHired())).append(" ")
-                .append(parser.parse(worker2.getFired())).append(" ")
-                .append(converter.convert(Currency.RUB, worker2.getSalary(), Currency.USD))
-                .append(System.lineSeparator());
-        assertThat(accounting.generate(employee -> true)).isEqualTo(expected.toString());
+        IReport accounting = new ReportAccounting(store, parser, converter);
+        String expected = "Name; Hired; Fired; Salary ($);" + System.lineSeparator()
+                + worker1.getName() + " "
+                + parser.parse(worker1.getHired()) + " "
+                + parser.parse(worker1.getFired()) + " "
+                + converter.convert(Currency.RUB, worker1.getSalary(), Currency.USD) + System.lineSeparator()
+                + worker3.getName() + " "
+                + parser.parse(worker3.getHired()) + " "
+                + parser.parse(worker3.getFired()) + " "
+                + converter.convert(Currency.RUB, worker3.getSalary(), Currency.USD) + System.lineSeparator()
+                + worker2.getName() + " "
+                + parser.parse(worker2.getHired()) + " "
+                + parser.parse(worker2.getFired()) + " "
+                + converter.convert(Currency.RUB, worker2.getSalary(), Currency.USD) + System.lineSeparator();
+        assertThat(accounting.generate(employee -> true)).isEqualTo(expected);
     }
 }

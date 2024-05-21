@@ -19,7 +19,7 @@ public class ReportEngineTest {
         Employee worker = new Employee("Ivan", now, now, 100);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report engine = new ReportEngine(store, parser);
+        IReport engine = new ReportEngine(store, parser);
         StringBuilder expected = new StringBuilder()
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())

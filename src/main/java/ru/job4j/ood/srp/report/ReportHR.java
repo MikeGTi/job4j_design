@@ -1,16 +1,16 @@
 package ru.job4j.ood.srp.report;
 
 import ru.job4j.ood.srp.model.Employee;
-import ru.job4j.ood.srp.store.Store;
+import ru.job4j.ood.srp.store.IStore;
 
 import java.util.*;
 import java.util.function.Predicate;
 
-public class ReportHR implements Report {
+public class ReportHR implements IReport {
     
-    private final Store store;
+    private final IStore store;
 
-    public ReportHR(Store store) {
+    public ReportHR(IStore store) {
         this.store = store;
     }
 

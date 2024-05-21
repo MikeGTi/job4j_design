@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class MemoryStore implements Store {
+public class MemoryStore implements IStore {
     private final List<Employee> employees = new ArrayList<>();
 
     @Override

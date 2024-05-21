@@ -1,7 +1,6 @@
 package ru.job4j.ood.srp.report;
 
 import org.junit.jupiter.api.Test;
-import ru.job4j.ood.srp.currency.InMemoryCurrencyConverter;
 import ru.job4j.ood.srp.formatter.DateTimeParser;
 import ru.job4j.ood.srp.formatter.ReportDateTimeParser;
 import ru.job4j.ood.srp.model.Employee;
@@ -19,7 +18,7 @@ class ReportITTest {
         Employee worker = new Employee("TestUser1", now, now, 101);
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
-        Report itRep = new ReportIT(store, parser);
+        IReport itRep = new ReportIT(store, parser);
         StringBuilder expected = new StringBuilder()
                 .append("Name, Hired, Fired, Salary").append(System.lineSeparator())
                 .append(worker.getName()).append(", ")
@@ -40,7 +39,7 @@ class ReportITTest {
         store.add(worker1);
         store.add(worker2);
         store.add(worker3);
-        Report itRep = new ReportIT(store, parser);
+        IReport itRep = new ReportIT(store, parser);
         StringBuilder expected = new StringBuilder()
                 .append("Name, Hired, Fired, Salary").append(System.lineSeparator())
                 .append(worker1.getName()).append(", ")
