@@ -19,13 +19,12 @@ class ReportITTest {
         DateTimeParser<Calendar> parser = new ReportDateTimeParser();
         store.add(worker);
         IReport itRep = new ReportIT(store, parser);
-        StringBuilder expected = new StringBuilder()
-                .append("Name, Hired, Fired, Salary").append(System.lineSeparator())
-                .append(worker.getName()).append(", ")
-                .append(parser.parse(worker.getHired())).append(", ")
-                .append(parser.parse(worker.getFired())).append(", ")
-                .append(worker.getSalary()).append(System.lineSeparator());
-        assertThat(itRep.generate(employee -> true)).isEqualTo(expected.toString());
+        String expected = "Name, Hired, Fired, Salary" + System.lineSeparator()
+                + worker.getName() + ", "
+                + parser.parse(worker.getHired()) + ", "
+                + parser.parse(worker.getFired()) + ", "
+                + worker.getSalary() + System.lineSeparator();
+        assertThat(itRep.generate(employee -> true)).isEqualTo(expected);
     }
 
     @Test
@@ -40,20 +39,19 @@ class ReportITTest {
         store.add(worker2);
         store.add(worker3);
         IReport itRep = new ReportIT(store, parser);
-        StringBuilder expected = new StringBuilder()
-                .append("Name, Hired, Fired, Salary").append(System.lineSeparator())
-                .append(worker1.getName()).append(", ")
-                .append(parser.parse(worker1.getHired())).append(", ")
-                .append(parser.parse(worker1.getFired())).append(", ")
-                .append(worker1.getSalary()).append(System.lineSeparator())
-                .append(worker2.getName()).append(", ")
-                .append(parser.parse(worker2.getHired())).append(", ")
-                .append(parser.parse(worker2.getFired())).append(", ")
-                .append(worker2.getSalary()).append(System.lineSeparator())
-                .append(worker3.getName()).append(", ")
-                .append(parser.parse(worker3.getHired())).append(", ")
-                .append(parser.parse(worker3.getFired())).append(", ")
-                .append(worker3.getSalary()).append(System.lineSeparator());
-        assertThat(itRep.generate(employee -> true)).isEqualTo(expected.toString());
+        String expected = "Name, Hired, Fired, Salary" + System.lineSeparator()
+                + worker1.getName() + ", "
+                + parser.parse(worker1.getHired()) + ", "
+                + parser.parse(worker1.getFired()) + ", "
+                + worker1.getSalary() + System.lineSeparator()
+                + worker2.getName() + ", "
+                + parser.parse(worker2.getHired()) + ", "
+                + parser.parse(worker2.getFired()) + ", "
+                + worker2.getSalary() + System.lineSeparator()
+                + worker3.getName() + ", "
+                + parser.parse(worker3.getHired()) + ", "
+                + parser.parse(worker3.getFired()) + ", "
+                + worker3.getSalary() + System.lineSeparator();
+        assertThat(itRep.generate(employee -> true)).isEqualTo(expected);
     }
 }
