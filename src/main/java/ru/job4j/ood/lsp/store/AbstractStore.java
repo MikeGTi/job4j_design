@@ -2,7 +2,7 @@ package ru.job4j.ood.lsp.store;
 
 import java.util.*;
 
-public abstract class AbstractStore implements Store<Food> {
+public abstract class AbstractStore implements IStore<Food> {
 
     List<Food> data = new ArrayList<>();
 

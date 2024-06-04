@@ -9,11 +9,11 @@ import java.util.List;
  */
 public class ControlDiscount {
 
-    private final List<Store<Food>> stores;
+    private final List<IStore<Food>> stores;
 
     private final List<DiscountRule> rules;
 
-    public ControlDiscount(List<Store<Food>> stores, List<DiscountRule> rules) {
+    public ControlDiscount(List<IStore<Food>> stores, List<DiscountRule> rules) {
         this.stores = stores;
         this.rules = rules;
     }
@@ -24,7 +24,7 @@ public class ControlDiscount {
     public void setDiscountAll() throws Exception {
         List<DiscountRule> sorted = new ArrayList<>(rules);
         sorted.sort(new RuleDiscountComparator().reversed());
-        for (Store<Food> store : stores) {
+        for (IStore<Food> store : stores) {
             for (Food food : store.getAll()) {
                 if (!setDiscount(food, sorted)) {
                     throw new Exception("Error item not set discount: " + food.getName());

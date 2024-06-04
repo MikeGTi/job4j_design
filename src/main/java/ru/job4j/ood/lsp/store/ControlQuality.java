@@ -8,9 +8,9 @@ import java.util.Optional;
  * Распределяет продукты/вещи по хранилищам
  */
 public class ControlQuality {
-    private final List<Store<Food>> stores;
+    private final List<IStore<Food>> stores;
 
-    protected ControlQuality(List<Store<Food>> stores) {
+    protected ControlQuality(List<IStore<Food>> stores) {
         this.stores = stores;
     }
 
@@ -22,12 +22,18 @@ public class ControlQuality {
         }
     }
 
-    private boolean distribute(Food food) {
+    private boolean distribute(Food food) throws Exception {
         boolean distributed = false;
-        for (Store<Food> store : stores) {
-            if (store.add(food)) {
-                distributed = true;
+        int count = 0;
+        for (IStore<Food> store : stores) {
+            count++;
+            distributed = store.add(food);
+            if (distributed) {
                 break;
+            } else {
+                if (stores.size() == count) {
+                    throw new Exception("Error food not distributed: " + food.getId());
+                }
             }
         }
         return distributed;
@@ -35,7 +41,7 @@ public class ControlQuality {
 
     public Optional<Food> getById(Long id) {
         Optional<Food> rsl = Optional.empty();
-        for (Store<Food> store : stores) {
+        for (IStore<Food> store : stores) {
             rsl = store.getById(id);
             if (rsl.isPresent()) {
                 break;

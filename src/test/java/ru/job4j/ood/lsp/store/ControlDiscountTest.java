@@ -11,8 +11,8 @@ import java.util.List;
 
 class ControlDiscountTest {
 
-    private Store<Food> shop;
-    private Store<Food> trash;
+    private IStore<Food> shop;
+    private IStore<Food> trash;
     ControlDiscount controlDiscount;
 
     @Test
@@ -26,7 +26,7 @@ class ControlDiscountTest {
         shop.add(new Food(2L, "Meat", last, future, 10.5D));
         shop.add(new Food(3L, "Milk", last, future, 1.5D));
 
-        List<Store<Food>> stores = List.of(shop);
+        List<IStore<Food>> stores = List.of(shop);
         List<DiscountRule> discountRules = List.of(new DiscountRule("expiredFoodAbove75Discount20p", f -> f.expirePercent(now) > 75, (byte) 20),
                                                    new DiscountRule("expiredFood100discount100p", f -> f.expirePercent(now) == 100, (byte) 100));
         controlDiscount = new ControlDiscount(stores, discountRules);
@@ -55,7 +55,7 @@ class ControlDiscountTest {
         trash.add(new Food(1L, "Bread", last, future, 1.75D));
         trash.add(new Food(2L, "Meat", last, future, 10.5D));
         trash.add(new Food(3L, "Milk", last, future, 1.5D));
-        List<Store<Food>> stores = List.of(trash);
+        List<IStore<Food>> stores = List.of(trash);
         List<DiscountRule> discountRules = List.of(new DiscountRule("expiredFoodAbove75Discount20p", f -> f.expirePercent(now) > 75, (byte) 20),
                                                    new DiscountRule("expiredFood100discount100p", f -> f.expirePercent(now) == 100, (byte) 100));
         controlDiscount = new ControlDiscount(stores, discountRules);

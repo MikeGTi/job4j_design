@@ -5,7 +5,7 @@ import java.util.List;
 
 public class StartUI {
     public static void main(String[] args) throws Exception {
-        List<Store<Food>> stores = List.of(new Warehouse(),
+        List<IStore<Food>> stores = List.of(new Warehouse(),
                                            new Shop(),
                                            new Trash());
         List<Food> items = getListOfFoods();

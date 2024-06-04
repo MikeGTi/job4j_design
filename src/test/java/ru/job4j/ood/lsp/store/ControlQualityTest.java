@@ -9,9 +9,9 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 class ControlQualityTest {
-    private Store<Food> warehouse;
-    private Store<Food> shop;
-    private Store<Food> trash;
+    private IStore<Food> warehouse;
+    private IStore<Food> shop;
+    private IStore<Food> trash;
 
     List<Food> foods;
 
