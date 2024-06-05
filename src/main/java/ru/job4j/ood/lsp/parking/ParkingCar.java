@@ -51,6 +51,8 @@ public class ParkingCar extends AbstractParking {
             if (size > 1) {
                 super.leaveAll(createListVehiclesIds(v.getId(), size - 1));
             }
+        } else {
+            throw new ParkingException(String.format("Vehicle with id: %s, not found", id));
         }
         return v;
     }
