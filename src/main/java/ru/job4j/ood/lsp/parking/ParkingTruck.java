@@ -11,9 +11,9 @@ public class ParkingTruck extends AbstractParking {
     }
 
     @Override
-    public boolean park(IVehicle v) throws ParkingException {
+    public boolean park(IVehicle v) {
         if (v != null && v.getSize() < 2) {
-            throw new ParkingException("Error parking only vehicles with size more than one");
+            return false;
         }
         return super.park(v);
     }

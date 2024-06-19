@@ -23,7 +23,7 @@ class ParkingCarTest {
     }
 
     @Test
-    void whenAddCarsAboveCapacityThanThrowException() throws Exception {
+    void whenAddCarsAboveCapacityThanFalse() {
         Car car1 = new Car(1L, "Lada 4x4");
         Car car2 = new Car(2L, "UAZ Hunter");
         Car car3 = new Car(3L, "Lada Kalina");
@@ -32,11 +32,11 @@ class ParkingCarTest {
         parkingCar.park(car1);
         parkingCar.park(car2);
 
-        assertThrows(Exception.class, () -> parkingCar.park(car3));
+        assertFalse(() -> parkingCar.park(car3));
     }
 
     @Test
-    void whenAddTruckThanAdded() throws Exception {
+    void whenAddTruckThanAdded() {
         Truck truck1 = new Truck(4L, (byte) 4, "KAMAZ 4401");
         ParkingCar parkingCar = new ParkingCar(10);
         assertTrue(parkingCar.park(truck1));
@@ -54,7 +54,7 @@ class ParkingCarTest {
     }
 
     @Test
-    void whenAddCarsTrucksAboveCapacityThanThrowException() throws Exception {
+    void whenAddCarsTrucksAboveCapacityThanThrowException() {
         Car car1 = new Car(1L, "Lada 4x4");
         Car car2 = new Car(2L, "UAZ Hunter");
         Car car3 = new Car(3L, "Lada Kalina");
@@ -70,11 +70,11 @@ class ParkingCarTest {
 
         parkingCar.park(truck1);
         parkingCar.park(truck2);
-        assertThrows(Exception.class, () -> parkingCar.park(truck3));
+        assertFalse(() -> parkingCar.park(truck3));
     }
 
     @Test
-    void whenAddCarAndGetAnotherThanThrowException() throws Exception {
+    void whenAddCarAndGetAnotherThanThrowException() {
         Car car1 = new Car(1L, "Lada 4x4");
 
         ParkingCar parkingCar = new ParkingCar(6);
@@ -84,7 +84,7 @@ class ParkingCarTest {
     }
 
     @Test
-    void whenAddTruckAndGetAnotherThanThrowException() throws Exception {
+    void whenAddTruckAndGetAnotherThanThrowException() {
         ParkingCar parkingCar = new ParkingCar(6);
         Truck truck1 = new Truck(4L, (byte) 4, "KAMAZ 4401");
         parkingCar.park(truck1);
@@ -92,7 +92,7 @@ class ParkingCarTest {
     }
 
     @Test
-    void whenAddLeaveCarAddTruckThanThrowException1() throws Exception {
+    void whenAddLeaveCarAddTruckThanFalse() throws Exception {
         ParkingCar parkingCar = new ParkingCar(3);
 
         Car car1 = new Car(1L, "Lada 4x4");
@@ -100,17 +100,17 @@ class ParkingCarTest {
         assertEquals(car1, parkingCar.leave(1L));
 
         Truck truck1 = new Truck(4L, (byte) 4, "KAMAZ 4401");
-        assertThrows(Exception.class, () -> parkingCar.park(truck1));
+        assertFalse(() -> parkingCar.park(truck1));
     }
 
     @Test
-    void whenAddTwoTrucksAboveCapacityThanThrowException() throws Exception {
+    void whenAddTwoTrucksAboveCapacityThanFalse() {
         ParkingCar parkingCar = new ParkingCar(6);
 
         Truck truck1 = new Truck(4L, (byte) 4, "KAMAZ 4401");
         Truck truck2 = new Truck(5L, (byte) 4, "MAZ 1643");
 
         parkingCar.park(truck1);
-        assertThrows(Exception.class, () -> parkingCar.park(truck2));
+        assertFalse(() -> parkingCar.park(truck2));
     }
 }

@@ -14,20 +14,13 @@ public class ControlParking {
     public boolean park(IVehicle vehicle) throws ParkingException {
         boolean parked = false;
         for (int i = 0; i < parkingLots.size(); i++) {
-            try {
-                parked = parkingLots.get(i).park(vehicle);
-                if (parked) {
-                    break;
-                } else {
-                    if (i == parkingLots.size() - 1) {
-                        throw new ParkingException("Error vehicle not parked: " + vehicle.getId());
-                    }
+            parked = parkingLots.get(i).park(vehicle);
+            if (parked) {
+                break;
+            } else {
+                if (i == parkingLots.size() - 1) {
+                    throw new ParkingException("Error vehicle not parked: " + vehicle.getId());
                 }
-            } catch (ParkingException e) {
-                /* Log the exception for better error reporting
-                 * logger.error("Error occurred while parking vehicle: " + vehicle.getId(), e);
-                 */
-                e.printStackTrace();
             }
         }
         return parked;

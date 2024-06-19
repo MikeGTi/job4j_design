@@ -62,13 +62,13 @@ class ControlParkingTest {
                 }
             };
             IParking<IVehicle> fullParkingLot = new IParking<>() {
-                public boolean park(IVehicle v) throws ParkingException {
-                    throw new ParkingException("Full");
-                }
-                public boolean parkAll(List<IVehicle> vs) throws ParkingException {
+                public boolean park(IVehicle v) {
                     return false;
                 }
-                public IVehicle leave(Long id) throws ParkingException {
+                public boolean parkAll(List<IVehicle> vs) {
+                    return false;
+                }
+                public IVehicle leave(Long id) {
                     return null;
                 }
                 public boolean hasPlace(int size) {

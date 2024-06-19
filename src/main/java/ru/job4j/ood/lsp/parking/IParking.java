@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface IParking<IVehicle> {
 
-    boolean park(IVehicle v) throws ParkingException;
+    boolean park(IVehicle v);
 
-    boolean parkAll(List<IVehicle> vs) throws ParkingException;
+    boolean parkAll(List<IVehicle> vs);
 
     IVehicle leave(Long id) throws ParkingException;
 

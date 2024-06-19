@@ -11,7 +11,7 @@ public class ParkingCar extends AbstractParking {
     }
 
     @Override
-    public boolean park(IVehicle v) throws ParkingException {
+    public boolean park(IVehicle v) {
         byte size = v.getSize();
         boolean rsl;
         if (size == 1) {
@@ -21,7 +21,7 @@ public class ParkingCar extends AbstractParking {
                 List<IVehicle> vs = createListVehicles(v, size);
                 rsl = super.parkAll(vs);
             } else {
-                throw new ParkingException("Overflow parking, not enough space");
+                return false;
             }
         }
         return rsl;

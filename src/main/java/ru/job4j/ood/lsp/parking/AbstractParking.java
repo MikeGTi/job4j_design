@@ -13,9 +13,9 @@ public abstract class AbstractParking implements IParking<IVehicle> {
 
     /*  Vehicle takes one place despite the size value */
     @Override
-    public boolean park(IVehicle v) throws ParkingException {
+    public boolean park(IVehicle v) {
         if (!hasPlace(1)) {
-            throw new ParkingException("Overflow parking, not enough space");
+            return false;
         }
         this.occupied++;
         this.vehicles[index++] = v;
@@ -23,9 +23,9 @@ public abstract class AbstractParking implements IParking<IVehicle> {
     }
 
     @Override
-    public boolean parkAll(List<IVehicle> vs) throws ParkingException {
+    public boolean parkAll(List<IVehicle> vs) {
         if (!hasPlace(vs.size())) {
-            throw new ParkingException("Overflow parking, not enough space");
+            return false;
         }
         for (IVehicle v : vs) {
             this.occupied++;

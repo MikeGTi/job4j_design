@@ -2,8 +2,7 @@ package ru.job4j.ood.lsp.parking;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ParkingTruckTest {
 
@@ -24,7 +23,7 @@ class ParkingTruckTest {
     }
 
     @Test
-    void whenExceedCapacityThanThrowException() throws Exception {
+    void whenExceedCapacityThanFalse() {
         Truck truck1 = new Truck(1L, (byte) 4, "KAMAZ 4401");
         Truck truck2 = new Truck(2L, (byte) 2, "MAZ 1643");
         Truck truck3 = new Truck(3L, (byte) 4, "KAMAZ 4403");
@@ -33,11 +32,11 @@ class ParkingTruckTest {
         parkingTruck.park(truck1);
         parkingTruck.park(truck2);
 
-        assertThrows(ParkingException.class, () -> parkingTruck.park(truck3));
+        assertFalse(() -> parkingTruck.park(truck3));
     }
 
     @Test
-    void whenGetNotParkedTruckThanThrowException() throws Exception {
+    void whenGetNotParkedTruckThanThrowException() {
         Truck truck1 = new Truck(1L, (byte) 4, "KAMAZ 4401");
         ParkingTruck parkingTruck = new ParkingTruck(2);
         parkingTruck.park(truck1);
@@ -45,9 +44,9 @@ class ParkingTruckTest {
     }
 
     @Test
-    void whenAddCarThanThrowException() {
+    void whenAddCarThanFalse() {
         Car car1 = new Car(1L, "Lada 4x4");
         ParkingTruck parkingTruck = new ParkingTruck(10);
-        assertThrows(ParkingException.class, () -> parkingTruck.park(car1));
+        assertFalse(() -> parkingTruck.park(car1));
     }
 }
