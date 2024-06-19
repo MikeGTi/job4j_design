@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ControlParkingTest {
 
-        // Successfully park a vehicle in an available parking lot
+        /* Successfully park a vehicle in an available parking lot */
         @Test
         public void whenParkVehicleThenOk() throws ParkingException {
             IVehicle vehicle = new IVehicle() {
@@ -44,7 +44,7 @@ class ControlParkingTest {
             assertTrue(controlParking.park(vehicle));
         }
 
-        // Attempt to park a vehicle when all parking lots are full
+        /*  Attempt to park a vehicle when all parking lots are full */
         @Test
         public void whenParkVehicleInFullParkingThanParkingException() {
             IVehicle vehicle = new IVehicle() {
@@ -79,7 +79,7 @@ class ControlParkingTest {
             assertThrows(ParkingException.class, () -> controlParking.park(vehicle));
         }
 
-        // Attempt to leave a vehicle that is not parked in any lot
+        /* Attempt to leave a vehicle that is not parked in any lot */
         @Test
         public void whenLeaveVehicleNotParkedThanParkingException() {
             IParking<IVehicle> parkingLot = new IParking<>() {
@@ -100,7 +100,4 @@ class ControlParkingTest {
             ControlParking controlParking = new ControlParking(List.of(parkingLot));
             assertThrows(ParkingException.class, () -> controlParking.leave(3L));
         }
-
-
-
 }
