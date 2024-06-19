@@ -11,6 +11,7 @@ package ru.job4j.ood.dip.violators;
  *  (например инициализацию через файл *.properties)
  */
 public class OrderService {
+    /* Пример не корректной реализации метода класса
     private final UserRepositoryImpl userRepository;
     private final ProductRepositoryImpl productRepository;
     private final OrderRepositoryImpl orderRepository;
@@ -24,5 +25,5 @@ public class OrderService {
         }
 
         var order = new Order(UUID.randomUUID(), user.getId(), product.getId());
-        orderRepository.create(order);
+        orderRepository.create(order);*/
     }
