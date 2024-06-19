@@ -11,6 +11,7 @@ package ru.job4j.ood.dip.violators;
  *  (например инициализацию через файл *.properties)
  */
 public class Reporter {
+
     public void sendReports() {
         /* Пример не корректной реализации метода класса
         var reportBuilder = new ReportBuilder();

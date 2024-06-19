@@ -26,4 +26,4 @@ public class OrderService {
 
         var order = new Order(UUID.randomUUID(), user.getId(), product.getId());
         orderRepository.create(order);*/
-    }
+}

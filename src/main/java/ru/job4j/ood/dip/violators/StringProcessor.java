@@ -26,4 +26,5 @@ public class StringProcessor {
     public void printString() throws IOException {
         stringWriter.write(stringReader.read());
     }
+
 }
