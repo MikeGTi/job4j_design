@@ -16,6 +16,7 @@ public class StartUI {
                                                               discountRules);
         controlDiscount.setDiscountAll();
         controlQuality.distributeAll(items);
+        controlQuality.resort();
     }
 
     public static List<Food> getListOfFoods() {

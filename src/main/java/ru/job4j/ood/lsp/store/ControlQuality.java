@@ -1,7 +1,6 @@
 package ru.job4j.ood.lsp.store;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 
 /*
@@ -12,6 +11,16 @@ public class ControlQuality {
 
     protected ControlQuality(List<IStore<Food>> stores) {
         this.stores = stores;
+    }
+
+    public void resort() throws Exception {
+        List<Food> foods = new ArrayList<>();
+        for (IStore<Food> str : stores) {
+            foods.addAll(str.getAll());
+        }
+
+        distributeAll(foods);
+        foods.clear();
     }
 
     public void distributeAll(List<Food> foods) throws Exception {
