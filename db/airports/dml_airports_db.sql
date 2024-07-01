@@ -248,7 +248,7 @@ where t1.cost not between 150 and 250;
 
 /* 39. определите все рейсы, номера которых между 'MN3000' и 'MN3500' */
 select * from flights f1
-where flight_no between 'MN3000' and 'MN3500';
+where f1.flight_no between 'MN3000' and 'MN3500';
 
 /* 40. определите все билеты, купленные с 1 января 2024 года до текущей даты */
 select * from tickets t1 join flights f1 on f1.id = t1.flight_id
@@ -1047,7 +1047,7 @@ order by average_ticket_price;
         в результатах выборки отразите только количество рейсов */
 select count(f1.flight_no) num_flights
 from flights f1
-where status = 'CANCELLED';
+where f1.status = 'CANCELLED';
 
 /* 157. определите модель самолёта и количество проданных билетов на каждый рейс с сортировкой количества по возрастанию
         в результатах выборки отразите модель самолета и количество билетов */
@@ -1271,7 +1271,7 @@ where aircraft_usage > 2;
 /* 175. определите список пассажиров, купивших билеты на рейсы из Минска. Выводите имя пассажира и номер билета */
 select t1.passenger_name, t1.passenger_no from tickets t1
     join flights f1 on f1.id = t1.flight_id
-where departure_airport_code = (select ap1.code from airports ap1
+where f1.departure_airport_code = (select ap1.code from airports ap1
                                 where ap1.city = 'Minsk');
 
 /* 176. определите список рейсов, которые уже приземлились, и количество купленных на них билетов
@@ -1837,3 +1837,554 @@ where t1.id = any(
     select t2.id from tickets t2
     where left(split_part(t2.passenger_name, ' ', 2), 1) like left(split_part('Dominic Cobb', ' ', 2), 1)
       and t2.passenger_name not like 'Dominic Cobb');
+
+/* 226. определите всех пассажиров, чьи имена есть в списке пассажиров, купивших билеты на рейс с номером "MN3002",
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select distinct * from tickets t1
+where t1.passenger_name = any(select t2.passenger_name from tickets t2
+                              where t2.flight_id = (select f2.id from flights f2
+                                                    where f2.flight_no = 'MN3002'));
+
+/* 227. определите пассажиров, которые купили билеты на более чем один рейс,
+        и вывести их имена и количество купленных билетов, отсортируйте имена по фамилии в алфавитном порядке;
+        в результатах выборки отразите информацию о билетах - имя пассажира и количество билетов */
+select t1.passenger_name, count(t1.flight_id) ticket_count from tickets t1
+group by t1.passenger_name
+having count(t1.flight_id) > 1
+order by t1.passenger_name;
+
+/* 228. определите всех пассажиров, у которых суммарная стоимость билетов превышает среднюю стоимость билета на всех рейсах,
+        отсортировать результат по общей стоимости по возрастанию,
+        в результатах выборки отразите фамилию пассажира и общую стоимость */
+select t1.passenger_name, sum(t1.cost) total_cost from tickets t1
+group by t1.passenger_name
+having sum(t1.cost) > (select avg(t2.cost) from tickets t2)
+order by total_cost;
+
+/* 229. определите всех пассажиров, которые купили билеты, c ценой такой же, как и самая низкая цена билета на каждом рейсе,
+        в результатах выборки отразите всю информацию о билетах (информацию из всех столбцов таблицы) */
+select * from tickets t1
+where t1.cost = any(select min(t2.cost) from tickets t2
+                    group by t2.flight_id);
+
+/* !230. определите всех пассажиров, купивших билеты на рейсы, прибывающие в определенный аэропорт,
+        и стоимость их билетов выше средней стоимости билетов на этих рейсах.
+        в результатах выборки отразите только имя пассажира */
+select distinct
+    t1.passenger_name
+from tickets t1
+         join flights f1 on t1.flight_id = f1.id
+where t1.cost > (select avg(t2.cost) from tickets t2
+                    join flights f2 on f2.id = t2.flight_id
+                 where t1.flight_id = t2.flight_id
+                 group by f2.id, t1.flight_id, f2.arrival_airport_code)
+group by f1.id, t1.passenger_name, f1.arrival_airport_code
+order by t1.passenger_name;
+
+select
+    t2.passenger_name,
+    t2.flight_id,
+    t2.cost,
+    (select avg(t4.cost) from tickets t4
+        join flights f6 on f6.id = t4.flight_id
+    where t4.flight_id = t2.flight_id
+    group by f6.id, f6.arrival_airport_code)
+    avg_cost,
+    f1.arrival_airport_code
+from tickets t2
+    join flights f1 on t2.flight_id = f1.id
+where t2.flight_id in (select f5.id from flights f5
+                       where f5.status != 'CANCELLED'
+                       group by f5.id, f5.arrival_airport_code)
+  and t2.cost < any(select avg(t4.cost) from tickets t4
+                        join flights f4 on f4.id = t4.flight_id
+                    where t4.flight_id = t2.flight_id
+                    group by t4.flight_id, f4.arrival_airport_code)
+order by t2.passenger_name;
+
+select avg(t2.cost) from tickets t2
+     join flights f2 on f2.id = t2.flight_id
+/* where f2.status != 'CANCELLED' */
+group by f2.id
+order by avg(t2.cost);
+
+select f2.id from flights f2
+group by f2.id, f2.arrival_airport_code;
+
+/* 231. определите все рейсы, на которых все билеты стоят больше 200,
+        в результатах выборки отразите id перелета, номер рейса, пункт отправления и пункт прибытия */
+select f1.id, f1.flight_no, f1.departure_airport_code, f1.arrival_airport_code from flights f1
+where f1.id in (
+                select t2.flight_id from tickets t2
+                group by t2.flight_id
+                having min(t2.cost) > 200);
+
+/* 232. определите всех пассажиров, купивших билеты на самый ранний рейс (за основу сравнения берите час отправления),
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.flight_id = (select f3.id
+                      from flights f3
+                      group by f3.id, f3.departure_date
+                      order by min(extract('HOUR' from departure_date))
+                      limit 1);
+
+select * from tickets t1
+where t1.flight_id = (select f3.id
+                      from flights f3
+                      where extract('HOUR' from f3.departure_date) <= all(select extract('HOUR' from f4.departure_date) from flights f4)
+                      group by f3.id, f3.departure_date);
+
+/* 233. определите все билеты, цена которых выше средней цены всех билетов,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all(select avg(t2.cost) from tickets t2);
+
+/* 234. определите все билеты, цена которых выше минимальной цены билета на каждом рейсе,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all(select min(t2.cost) from tickets t2
+                    group by t2.flight_id);
+
+/* 235. определите все билеты, цена которых выше цены самого дорогого билета на рейс MN3002,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all(select t2.cost from tickets t2
+                         join flights f2 on f2.id = t2.flight_id
+                    where f2.flight_no = 'MN3002');
+
+select min(t2.cost) from tickets t2
+    join flights f2 on f2.id = t2.flight_id
+where f2.flight_no = 'MN3002';
+
+/* 236. определите все билеты, цена которых выше средней цены билета на каждый из рейсов,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all(select avg(t2.cost) from tickets t2
+                        join flights f2 on f2.id = t2.flight_id
+                    group by t2.flight_id);
+
+/* 237. определите все билеты, цена которых ниже средней цены билетов на каждый рейс из Минска
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost < all (select avg(t2.cost) from tickets t2
+                         join flights f2 on f2.id = t2.flight_id
+                     where f2.departure_airport_code = (select ap2.code from airports ap2
+                                                        where ap2.city = 'Minsk')
+                     group by f2.id, f2.departure_airport_code);
+
+/* 238. определите все билеты, цена которых выше или равна средней цены билетов на каждый из рейсов в Лондон,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost >= all (select avg(t2.cost) from tickets t2
+                        join flights f2 on f2.id = t2.flight_id
+                     where f2.arrival_airport_code = (select ap2.code from airports ap2
+                                                      where ap2.city = 'London')
+                     group by f2.id, f2.arrival_airport_code);
+
+/* 239. определите все билеты, цена которых выше цены на каждый из билетов на рейсы из Москвы на Airbus A320-200
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all (select t2.cost from tickets t2
+                               join flights f2 on f2.id = t2.flight_id
+                               join aircrafts a2 on a2.id = f2.aircraft_id
+                      where f2.departure_airport_code = (select ap2.code from airports ap2
+                                                         where ap2.city = 'Moscow')
+                        and a2.model = 'Airbus A320-200'
+                      group by f2.id, f2.departure_airport_code, t2.cost);
+
+/* 240. определите все билеты, цена которых ниже цены каждого из билетов на рейсы из Барселоны,
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost < all (select t2.cost from tickets t2
+                                             join flights f2 on f2.id = t2.flight_id
+                     where f2.departure_airport_code = (select ap2.code from airports ap2
+                                                        where ap2.city = 'Barcelona')
+                     group by f2.id, f2.departure_airport_code, t2.cost);
+
+/* 241. определите все билеты, цена которых выше максимальной цены билетов на каждый из рейсов, статус которых не "ARRIVED"
+        в результатах выборки отразите всю информацию о билетах (все столбцы из таблицы tickets) */
+select * from tickets t1
+where t1.cost > all (select t2.cost from tickets t2
+                                             join flights f2 on f2.id = t2.flight_id
+                     where f2.status != 'ARRIVED'
+                     group by f2.id, t2.cost);
+
+/* 242. определите пассажиров, которые летели как минимум на одном рейсе из Минска в Лондон и обратно,
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                      join flights f2 on f2.id = t2.flight_id
+where f2.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+  and f2.arrival_airport_code = (select ap3.code from airports ap3
+                                 where ap3.city = 'London')
+intersect
+select t3.passenger_name from tickets t3
+      join flights f3 on f3.id = t3.flight_id
+where f3.departure_airport_code = (select ap4.code from airports ap4
+                                   where ap4.city = 'London')
+  and f3.arrival_airport_code = (select ap5.code from airports ap5
+                                 where ap5.city = 'Minsk');
+
+/* 243. определите пассажиров, которые летели на рейсах, которые когда либо прибывали в Барселону и когда либо отправлялись из Минска
+        (т.е. не обязательно один и тот же рейс, учитываем все рейсы), в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.arrival_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Barcelona')
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.departure_airport_code = (select ap4.code from airports ap4
+                                   where ap4.city = 'Minsk');
+
+/* 244. определите пассажиров, которые когда-либо покупали билеты на рейсы с моделью самолёта Boeing 777-300 и Sukhoi Superjet 100
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+      join flights f2 on f2.id = t2.flight_id
+      join aircrafts a2 on a2.id = f2.aircraft_id
+where a2.model = 'Boeing 777-300'
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+                                  join aircrafts a3 on a3.id = f3.aircraft_id
+where a3.model = 'Sukhoi Superjet 100';
+
+/* 245. определите пассажиров, которые купили билеты на рейсы, прибывающие в Лондон и отправляющиеся из Минска,
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+                                  join airports ap2 on ap2.code = f2.arrival_airport_code
+where ap2.city = 'London'
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+                                  join airports ap3 on ap3.code = f3.departure_airport_code
+where ap3.city = 'Minsk';
+
+/* 246. определите пассажиров, которые купили билеты на рейсы, отправляющиеся из Москвы или прибывающие в Москву
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+                                  join airports ap2 on ap2.code = f2.arrival_airport_code
+where ap2.city = 'Moscow'
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+                                  join airports ap3 on ap3.code = f3.departure_airport_code
+where ap3.city = 'Moscow';
+
+/* 247. определите пассажиров, которые купили билеты на рейсы, отправляющиеся из Барселоны и прибывающие в Москву, имена отсортируйте по алфавиту
+        в результатах выборки отразите имя пассажира */
+select t3.passenger_name from (
+    select t2.passenger_name from tickets t2
+                                      join flights f2 on f2.id = t2.flight_id
+                                      join airports ap2 on ap2.code = f2.departure_airport_code
+    where ap2.city = 'Barcelona'
+    intersect
+    select t3.passenger_name from tickets t3
+                                      join flights f3 on f3.id = t3.flight_id
+                                      join airports ap3 on ap3.code = f3.arrival_airport_code
+    where ap3.city = 'Moscow') t3
+order by t3.passenger_name;
+
+/* 248. определите пассажиров, которые купили билеты на рейсы, отправляющиеся из Москвы и прибывающие в Барселону,
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+                                  join airports ap2 on ap2.code = f2.departure_airport_code
+where ap2.city = 'Moscow'
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+                                  join airports ap3 on ap3.code = f3.arrival_airport_code
+where ap3.city = 'Barcelona';
+
+/* 249. определите пассажиров, которые купили билеты на рейсы, отправляющиеся из Минска и учитывая только тех, которые летели на рейсах до '2024-01-01',
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+                                  join airports ap2 on ap2.code = f2.departure_airport_code
+where ap2.city = 'Minsk'
+intersect
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.departure_date < '2024-01-01';
+
+/* 250. определите пассажиров, которые когда либо покупали билеты на рейсы со статусом "ARRIVED" и 'SCHEDULED',
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                join flights f2 on f2.id = t2.flight_id
+where f2.status = 'ARRIVED'
+intersect
+select t3.passenger_name from tickets t3
+                                join flights f3 on f3.id = t3.flight_id
+where f3.status = 'SCHEDULED';
+
+/* 251. определите имена пассажиров, которые на разных рейсах могли купить самый дорогой и самый дешевый билет,
+        в результатах выборки отразите имя пассажира */
+select t1.passenger_name from tickets t1
+where t1.cost = (select max(t2.cost) from tickets t2
+                 where t1.flight_id = t2.flight_id
+                 group by t2.flight_id)
+    intersect
+select t3.passenger_name from tickets t3
+where t3.cost = (select min(t4.cost) from tickets t4
+                 where t3.flight_id = t4.flight_id
+                 group by t4.flight_id);
+
+/* 252. определите пассажиров, которые есть в первом рейсе (MN3002), но не присутствуют во втором рейсе (MN3003),
+        в результатах выборки отразите имя пассажира */
+select t1.passenger_name from tickets t1
+         join flights f1 on f1.id = t1.flight_id
+where f1.flight_no = 'MN3002'
+    except
+select t3.passenger_name from tickets t3
+          join flights f2 on f2.id = t3.flight_id
+where f2.flight_no = 'MN3003';
+
+/* 253. определите пассажиров, которые есть на рейсы из Минска в Лондон, но не присутствуют на рейсах из Лондона в Минск,
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+  and f2.arrival_airport_code = (select ap3.code from airports ap3
+                                 where ap3.city = 'London')
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.departure_airport_code = (select ap4.code from airports ap4
+                                   where ap4.city = 'London')
+  and f3.arrival_airport_code = (select ap5.code from airports ap5
+                                 where ap5.city = 'Minsk');
+
+/* 254. определите пассажиров, которые забронировали билеты на рейс из Москвы в Барселону (TR3103),
+        но не присутствуют в списке пассажиров на отменённом рейсе из Барселоны в Москву (TR3104),
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+          join flights f2 on f2.id = t2.flight_id
+where f2.flight_no = 'TR3103'
+except
+select t3.passenger_name from tickets t3
+          join flights f3 on f3.id = t3.flight_id
+where f3.flight_no = 'TR3104';
+
+/* 255. определите пассажиров, которые бронировали билеты на рейсы из Минска,
+        но не присутствуют в списке пассажиров на рейсы со статусами 'CANCELLED', 'SCHEDULED', 'DEPARTED',
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.status = 'CANCELLED'
+   or f3.status = 'SCHEDULED'
+   or f3.status = 'DEPARTED';
+
+/* 256. определите список пассажиров, которые бронировали билеты на рейсы из Минска в Лондон,
+        но не присутствуют в списке пассажиров на рейсы из Лондона в Минск, и при этом статус рейсов из Лондона в Минск "ARRIVED",
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+  and f2.arrival_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'London')
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.status = 'ARRIVED'
+  and f3.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'London')
+  and f3.arrival_airport_code = (select ap2.code from airports ap2
+                                 where ap2.city = 'Minsk');
+
+/* 257. определите список пассажиров, которые бронировали билеты на рейс QS8712 из Минска в Лондон
+        и не присутствуют в списке пассажиров ни на каком другом рейсе из Минска в Лондон,
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.flight_no = 'QS8712'
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.flight_no != 'QS8712'
+    and f3.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+  and f3.arrival_airport_code = (select ap2.code from airports ap2
+                                 where ap2.city = 'London');
+
+/* 258. определите список пассажиров, которые бронировали билеты на рейсы в Минск,
+        но не присутствуют в списке пассажиров ни на каком другом рейсе в Москву и статус отличен от 'ARRIVAL',
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.arrival_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.arrival_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Moscow')
+  and f3.status != 'ARRIVAL';
+
+/* 259. определите список пассажиров, которые бронировали билеты на рейс из Лондона в Минск (MN3003)
+        и не присутствуют в списке пассажиров на рейсы из Минска в Лондон, и при этом статус рейса из Минска в Лондон "ARRIVED",
+        в результатах выборки отразите имя пассажира */
+select t2.passenger_name from tickets t2
+                                  join flights f2 on f2.id = t2.flight_id
+where f2.flight_no = 'MN3003'
+except
+select t3.passenger_name from tickets t3
+                                  join flights f3 on f3.id = t3.flight_id
+where f3.status = 'ARRIVED'
+  and f3.departure_airport_code = (select ap2.code from airports ap2
+                                   where ap2.city = 'Minsk')
+  and f3.arrival_airport_code = (select ap2.code from airports ap2
+                                 where ap2.city = 'London');
+
+/* 260. определите пассажиров которые купили билет на каждый из рейсов по максимальной цене,
+        но их нет на других рейсах, где они купили билет по минимальной цене,
+        в результатах выборки отразите имя пассажира */
+select t1.passenger_name from tickets t1
+where t1.cost = (select max(t2.cost) from tickets t2
+                 where t1.flight_id = t2.flight_id
+                 group by t2.flight_id)
+except
+select t3.passenger_name from tickets t3
+where t3.cost = (select min(t4.cost) from tickets t4
+                 where t3.flight_id = t4.flight_id
+                 group by t4.flight_id);
+
+/* 261. определите пассажиров, которые купили более одного билета по минимальной цене на разных рейсах,
+        в результатах выборки отразите имя пассажира */
+select q1.passenger_name from
+(select t1.passenger_name from tickets t1
+where t1.cost = (select min(t2.cost) min_cost from tickets t2
+                 where t1.flight_id = t2.flight_id
+                 group by t2.flight_id)) q1
+group by q1.passenger_name
+having count(q1.passenger_name) > 1;
+
+select t1.passenger_name from tickets t1
+where t1.cost = (select min(t2.cost) min_cost from tickets t2
+                 where t1.flight_id = t2.flight_id
+                 group by t2.flight_id);
+
+select min(t2.cost) min_cost from tickets t2
+group by t2.flight_id;
+
+/* 262. определите пассажиров, которые купили более одного билета по максимальной цене на разных рейсах,
+        в результатах выборки отразите имя пассажира */
+select q1.passenger_name from
+    (select t1.passenger_name from tickets t1
+     where t1.cost = (select max(t2.cost) min_cost from tickets t2
+                      where t1.flight_id = t2.flight_id
+                      group by t2.flight_id)) q1
+group by q1.passenger_name
+having count(q1.passenger_name) > 1;
+
+/* 263. определите место в самолете на всех рейсах, на которое продано больше всего билетов,
+        в результатах выборки отразите номер места и количество проданных билетов на него */
+select t1.seat_no, count(t1.seat_no) num_passengers from tickets t1
+group by t1.seat_no
+order by num_passengers desc
+limit 1;
+
+/* 264. определите место в самолете на всех рейсах, на которое продано больше всего билетов
+        в результатах выборки отразите номер места и количество проданных билетов на него
+        (копия предыдущего, но тут используйте другой подход для решения) */
+select * from (select t1.seat_no, count(t1.seat_no) num_passengers from tickets t1
+               group by t1.seat_no) c1
+order by c1.num_passengers desc
+limit 1;
+
+/* 265. определите место в самолете на всех рейсах, на которое продано больше всего билетов
+        в результатах выборки отразите номер места и количество проданных билетов на него
+        (копия предыдущего, но тут используйте другой подход для решения) */
+select c1.seat_no, max(c1.count1) num_passengers from (select t1.seat_no, count(t1.seat_no) count1 from tickets t1
+                                                       group by t1.seat_no) c1
+group by c1.seat_no
+having max(c1.count1) = (select count(t1.seat_no) from tickets t1
+                         group by t1.seat_no
+                         order by count(t1.seat_no) desc
+                         limit 1);
+
+/* 266. определите самое дешевое место с учетом всех проданных на него билетов,
+        в результатах выборки отразите номер места и и общую стоимость билетов на него */
+select t1.seat_no, sum(t1.cost) total_revenue from tickets t1
+group by t1.seat_no
+order by total_revenue
+limit 1;
+
+/* 267. определите самое дешевое место с учетом всех проданных на него билетов,
+        в результатах выборки отразите номер места и и общую стоимость билетов на него
+        (копия предыдущего, но тут используйте другой подход для решения) */
+select c1.seat_no, min(c1.count1) total_revenue from
+    (select t1.seat_no, sum(t1.cost) count1 from tickets t1
+     group by t1.seat_no) c1
+group by c1.seat_no
+having min(c1.count1) = (select sum(t1.cost) from tickets t1
+                         group by t1.seat_no
+                         order by sum(t1.cost)
+                         limit 1);
+
+/* 268. определите самое дешевое место с учетом всех проданных на него билетов,
+        в результатах выборки отразите номер места и и общую стоимость билетов на него
+        (копия предыдущего, но тут используйте другой подход для решения) */
+select c1.seat_no, min(c1.count1) total_revenue from
+    (select t1.seat_no, sum(t1.cost) count1 from tickets t1
+     group by t1.seat_no) c1
+group by c1.seat_no
+having min(c1.count1) = (select sum(t1.cost) from tickets t1
+                         group by t1.seat_no
+                         order by sum(t1.cost)
+                         limit 1);
+
+/* 269. определите самолет на покупку билетов в который было потрачено больше всего денег,
+        в результатах выборки отразите id самолета и общую стоимость всех билетов на него */
+select f1.aircraft_id, sum(t1.cost) total_revenue from tickets t1
+    join flights f1 on f1.id = t1.flight_id
+group by f1.aircraft_id
+order by sum(t1.cost) desc
+limit 1;
+
+/* 270-271. определите самолет на покупку билетов в который было потрачено больше всего денег,
+        в результатах выборки отразите id самолета и общую стоимость всех билетов на него */
+select a1.model,
+       sum(t1.cost) total_revenue
+from tickets t1
+      join flights f1 on f1.id = t1.flight_id
+      join aircrafts a1 on a1.id = f1.aircraft_id
+group by a1.model
+having sum(t1.cost) = (select sum(t2.cost) from tickets t2
+                            join flights f2 on f2.id = t2.flight_id
+                 group by f2.aircraft_id
+                 order by sum(t2.cost) desc
+                 limit 1);
+
+/* 272. определить пассажира, который летал на всех моделях самолета,
+        в результатах отразите только имя пассажира */
+select
+    t1.passenger_name
+from tickets t1
+    join flights f1 on f1.id = t1.flight_id
+group by t1.passenger_name, f1.aircraft_id
+order by count(t1.passenger_name) desc
+limit 1;
+
+/* 273-274. определите пассажира, который летал на наибольшем количестве моделей самолета,
+        в результатах отразите имя пассажира и количество моделей для перелета */
+select
+    t1.passenger_name,
+    count(a1.model) models_flown
+from tickets t1
+         join flights f1 on f1.id = t1.flight_id
+         join aircrafts a1 on a1.id = f1.aircraft_id
+where t1.passenger_name != 'John Doe'
+  and t1.passenger_name != 'Nina Sayers'
+group by t1.passenger_name
+order by models_flown desc
+limit 1;
