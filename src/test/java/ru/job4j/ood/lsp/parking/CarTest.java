@@ -8,7 +8,7 @@ class CarTest {
     @Test
     void whenNewCarThanSize1() {
         Car car = new Car(1L, "Lada 4x4");
-        assertEquals(1, car.getSize());
+        assertEquals(1L, car.getSize());
     }
 
     @Test
