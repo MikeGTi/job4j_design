@@ -1,9 +1,6 @@
 package ru.job4j.algo.sorts.mergesort;
 
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.*;
 
 class MergeTest {
