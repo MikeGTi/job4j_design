@@ -4,7 +4,6 @@ import java.util.*;
 
 public class StartSliding {
     public static int[] findMaxOverlapInterval(List<Interval> intervals) {
-        /* Implement the method to find the interval that overlaps the maximum number of intervals */
         if (intervals.size() == 0) {
             return new int[]{-1, -1};
         } else if (intervals.size() == 1) {
@@ -37,12 +36,9 @@ public class StartSliding {
         int maxCount = 0;
         for (Map.Entry<Interval, Integer> entry : countMap.entrySet()) {
             if (maxCount <= entry.getValue()) {
-                System.out.printf("Interval: [%s, %s], intersects: %s (max)%n", entry.getKey().start, entry.getKey().end, entry.getValue());
                 maxCount = entry.getValue();
                 rsl[0] = entry.getKey().start;
                 rsl[1] = entry.getKey().end;
-            } else {
-                System.out.printf("Interval: [%s, %s], intersects: %s%n", entry.getKey().start, entry.getKey().end, entry.getValue());
             }
         }
         return rsl;
@@ -68,11 +64,6 @@ public class StartSliding {
         intervals.add(new Interval(7, 8));
 
         int[] result = findMaxOverlapInterval(intervals);
-
-        System.out.println("Interval that overlaps the maximum number of intervals: [" + result[0] + ", " + result[1] + "]");
+        System.out.printf("Interval that overlaps the maximum number of intervals: [%s, %s%n]", result[0], result[1]);
     }
-
-
-
-
 }
