@@ -12,7 +12,27 @@ public class StartSliding {
 
         Event[] events = collectEvents(intervals);
         Arrays.sort(events, Event::compareTo);
+        HashMap<Interval, Integer> countMap = countIntersections(events);
 
+        return getMaxIntersectionsInterval(countMap);
+    }
+
+    private static int[] getMaxIntersectionsInterval(HashMap<Interval, Integer> countMap) {
+        int[] rsl = new int[]{-1, -1};
+        if (countMap.size() > 0) {
+            int maxCount = 0;
+            for (Map.Entry<Interval, Integer> entry : countMap.entrySet()) {
+                if (maxCount <= entry.getValue()) {
+                    maxCount = entry.getValue();
+                    rsl[0] = entry.getKey().start;
+                    rsl[1] = entry.getKey().end;
+                }
+            }
+        }
+        return rsl;
+    }
+
+    private static HashMap<Interval, Integer> countIntersections(Event[] events) {
         HashMap<Interval, Integer> countMap = new HashMap<>();
         int started = events[0].time;
         int ends = events[events.length - 1].time;
@@ -31,17 +51,7 @@ public class StartSliding {
                 intersCount = 0;
             }
         }
-
-        int[] rsl = new int[]{-1, -1};
-        int maxCount = 0;
-        for (Map.Entry<Interval, Integer> entry : countMap.entrySet()) {
-            if (maxCount <= entry.getValue()) {
-                maxCount = entry.getValue();
-                rsl[0] = entry.getKey().start;
-                rsl[1] = entry.getKey().end;
-            }
-        }
-        return rsl;
+        return countMap;
     }
 
     private static Event[] collectEvents(List<Interval> intervals) {
