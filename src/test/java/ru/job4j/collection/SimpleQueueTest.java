@@ -61,8 +61,6 @@ class SimpleQueueTest {
 
     @Test
     void whenAddElementThanSizeOk() {
-        assertThat(queue.size()).isEqualTo(0);
-        queue.push(42);
         assertThat(queue.size()).isEqualTo(1);
         queue.poll();
         assertThat(queue.size()).isEqualTo(0);

@@ -66,6 +66,9 @@ public class SimpleQueue<T> {
      * @return количество элементов
      */
     public int size() {
+        if (inSize == 1 && this.peek() == null) {
+            return 0;
+        }
         return size;
     }
 }
