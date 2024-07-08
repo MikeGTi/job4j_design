@@ -13,4 +13,8 @@ public class SimpleStack<T> {
     public void push(T value) {
         linked.addFirst(value);
     }
+
+    public T peek() throws NoSuchElementException {
+        return linked.get(linked.size() - 1);
+    }
 }
