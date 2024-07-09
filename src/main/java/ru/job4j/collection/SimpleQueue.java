@@ -7,7 +7,6 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
     private int inSize = 0;
     private int outSize = 0;
-    private int size = 0;
 
     /**
      * Метод добавляет элемент в конец очереди
@@ -16,7 +15,6 @@ public class SimpleQueue<T> {
     public void push(T value) {
         in.push(value);
         inSize++;
-        size++;
     }
 
     /**
@@ -38,7 +36,6 @@ public class SimpleQueue<T> {
         }
 
         outSize--;
-        size--;
         return out.pop();
     }
 
@@ -66,9 +63,6 @@ public class SimpleQueue<T> {
      * @return количество элементов
      */
     public int size() {
-        if (inSize == 1 && this.peek() == null) {
-            return 0;
-        }
-        return size;
+        return inSize + outSize;
     }
 }

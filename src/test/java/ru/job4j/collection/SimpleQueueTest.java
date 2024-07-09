@@ -10,7 +10,7 @@ class SimpleQueueTest {
     private SimpleQueue<Integer> queue;
 
     @BeforeEach
-    public void setUp() {
+    public void init() {
         queue = new SimpleQueue<>();
         queue.push(1);
     }
