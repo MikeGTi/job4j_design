@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public class TreeUtils<T> {
 
-    /* Needs to re-code by SOLID principles, on Queue & Stack interfaces */
+    /* Needs to re-code by SOLID principles, on Queue & Stack interfaces dependencies injection by constructor */
 
     /**
      * Метод выполняет обход дерева и считает количество узлов
