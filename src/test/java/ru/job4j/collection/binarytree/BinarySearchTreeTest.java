@@ -3,6 +3,7 @@ package ru.job4j.collection.binarytree;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class BinarySearchTreeTest {
     @Test
@@ -97,4 +98,81 @@ class BinarySearchTreeTest {
         assertThat(tree.inPostOrder()).hasSize(7)
                 .containsExactly(1, 3, 2, 5, 7, 6, 4);
     }
+
+    @Test
+    public void whenRemoveNonExistentNodeThanFalse() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        assertFalse(bst.remove(20));
+    }
+
+    @Test
+    public void whenRemoveRootNode() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        assertTrue(bst.remove(10));
+        assertFalse(bst.contains(10));
+    }
+
+    @Test
+    public void whenRemoveNodeWithOneChildThanOk() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        assertTrue(bst.remove(15));
+        assertFalse(bst.contains(15));
+    }
+
+    @Test
+    public void whenRemoveNodeWithTwoChildrenThanOk() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        bst.put(3);
+        bst.put(7);
+        assertTrue(bst.remove(5));
+        assertFalse(bst.contains(5));
+    }
+
+    @Test
+    public void whenRemoveNodeMaintainBstProperties() {
+
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        System.out.println(bst);
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        bst.put(3);
+        bst.put(7);
+        /*System.out.printf("Before:%n%s%n", bst);*/
+        assertTrue(bst.remove(5));
+        /*System.out.printf("Remove node (5):%n%s%n", bst);*/
+        System.out.println(bst);
+        assertFalse(bst.contains(5));
+        assertTrue(bst.contains(3));
+        assertTrue(bst.contains(7));
+    }
+
+    /*@Test
+    public void whenRemoveNodeUpdateParentReferences() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(10);
+        bst.put(5);
+        bst.put(15);
+        bst.put(3);
+        bst.put(7);
+        assertTrue(bst.remove(5));
+        assertFalse(bst.contains(5));
+        assertTrue(bst.contains(3));
+        assertTrue(bst.contains(7));
+        assertEquals(Integer.valueOf(10), bst.root.key);
+        assertEquals(Integer.valueOf(3), bst.root.left.key);
+        assertEquals(Integer.valueOf(7), bst.root.left.right.key);
+    }*/
 }
