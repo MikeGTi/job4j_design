@@ -11,7 +11,7 @@ class AvlTreeTest {
     @Test
     void whenAddToEmptyTreeThenListContainsOneElement() {
         AvlTree<String> tree = new AvlTree<>();
-        assertThat(tree.put("first")).isTrue();
+        assertThat(tree.insert("first")).isTrue();
         assertThat(tree.inSymmetricalOrder()).hasSize(1)
                 .containsExactly("first");
     }
@@ -19,8 +19,8 @@ class AvlTreeTest {
     @Test
     void whenAddTwoToEmptyTreeThenListContainsTwoElement() {
         AvlTree<String> tree = new AvlTree<>();
-        assertThat(tree.put("first")).isTrue();
-        assertThat(tree.put("second")).isTrue();
+        assertThat(tree.insert("first")).isTrue();
+        assertThat(tree.insert("second")).isTrue();
         assertThat(tree.inSymmetricalOrder()).hasSize(2)
                 .containsExactly("first", "second");
     }
@@ -28,9 +28,9 @@ class AvlTreeTest {
     @Test
     void whenAddElementThenContainElementOk() {
         AvlTree<String> tree = new AvlTree<>();
-        tree.put("first");
-        tree.put("second");
-        tree.put("three");
+        tree.insert("first");
+        tree.insert("second");
+        tree.insert("three");
         assertThat(tree.contains("second")).isTrue();
         assertThat(tree.contains("four")).isFalse();
     }
@@ -39,7 +39,7 @@ class AvlTreeTest {
     void whenAddMaximumNotEndThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 1, 3, 5, 8, 7}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.maximum()).isEqualTo(8);
     }
@@ -48,7 +48,7 @@ class AvlTreeTest {
     void whenAddMaximumIsEndThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 1, 3, 5, 7}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.maximum()).isEqualTo(7);
     }
@@ -57,7 +57,7 @@ class AvlTreeTest {
     void whenAddMinimumIsEndThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 3, 5, 7, 1}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.minimum()).isEqualTo(1);
     }
@@ -66,7 +66,7 @@ class AvlTreeTest {
     void whenAddMinimumIsNotEndThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 3, 5, 7 }) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.minimum()).isEqualTo(2);
     }
@@ -75,7 +75,7 @@ class AvlTreeTest {
     void whenSymmetricalOrderThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 3, 5, 7, 1}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.inSymmetricalOrder()).hasSize(7)
                 .containsExactly(1, 2, 3, 4, 5, 6, 7);
@@ -85,7 +85,7 @@ class AvlTreeTest {
     void whenPreOrderThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 3, 5, 7, 1}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.inPreOrder()).hasSize(7)
                 .containsExactly(4, 2, 1, 3, 6, 5, 7);
@@ -95,7 +95,7 @@ class AvlTreeTest {
     void whenPostOrderThenOk() {
         AvlTree<Integer> tree = new AvlTree<>();
         for (int element : new int[]{4, 2, 6, 3, 5, 7, 1}) {
-            tree.put(element);
+            tree.insert(element);
         }
         assertThat(tree.inPostOrder()).hasSize(7)
                 .containsExactly(1, 3, 2, 5, 7, 6, 4);
@@ -104,18 +104,18 @@ class AvlTreeTest {
     @Test
     public void whenRemoveNonExistentNodeThanFalse() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(10);
-        bst.put(5);
-        bst.put(15);
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
         assertFalse(bst.remove(20));
     }
 
     @Test
     public void whenRemoveRootNode() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(10);
-        bst.put(5);
-        bst.put(15);
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
         assertTrue(bst.remove(10));
         assertFalse(bst.contains(10));
     }
@@ -123,9 +123,9 @@ class AvlTreeTest {
     @Test
     public void whenRemoveNodeWithOneChildThanOk() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(10);
-        bst.put(5);
-        bst.put(15);
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
         assertTrue(bst.remove(15));
         assertFalse(bst.contains(15));
     }
@@ -133,11 +133,11 @@ class AvlTreeTest {
     @Test
     public void whenRemoveNodeWithTwoChildrenThanOk() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(10);
-        bst.put(5);
-        bst.put(15);
-        bst.put(3);
-        bst.put(7);
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
+        bst.insert(3);
+        bst.insert(7);
         assertTrue(bst.remove(5));
         assertFalse(bst.contains(5));
     }
@@ -145,11 +145,11 @@ class AvlTreeTest {
     @Test
     public void whenRemoveNodeThanTreeOk() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(10);
-        bst.put(5);
-        bst.put(15);
-        bst.put(3);
-        bst.put(7);
+        bst.insert(10);
+        bst.insert(5);
+        bst.insert(15);
+        bst.insert(3);
+        bst.insert(7);
         /*System.out.printf("Before:%n%s%n", bst);*/
         assertTrue(bst.remove(5));
         /*System.out.printf("Remove node (5):%n%s%n", bst);*/
@@ -163,7 +163,7 @@ class AvlTreeTest {
         AvlTree<Integer> bst = new AvlTree<>();
         int[] array = new int[]{2, 1, 10, 6, 14, 4, 8, 12, 16, 11, 9, 13, 15, 17, 3, 5, 7};
         for (int i : array) {
-            bst.put(i);
+            bst.insert(i);
         }
         bst.clear();
         assertTrue(bst.inSymmetricalOrder().isEmpty());
@@ -179,7 +179,7 @@ class AvlTreeTest {
     @Test
     public void whenClearOnSingleNodeTree() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(1);
+        bst.insert(1);
         bst.clear();
         assertTrue(bst.inSymmetricalOrder().isEmpty());
     }
@@ -187,8 +187,8 @@ class AvlTreeTest {
     @Test
     public void whenClearOnPopulatedTreeDoesNotThrowExceptions() {
         AvlTree<Integer> bst = new AvlTree<>();
-        bst.put(5);
-        bst.put(10);
+        bst.insert(5);
+        bst.insert(10);
         assertDoesNotThrow(bst::clear);
     }
 

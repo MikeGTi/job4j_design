@@ -8,55 +8,6 @@ public class AvlTree<T extends Comparable<T>> {
 
     public Node root;
 
-    public boolean put(T key) {
-        boolean result;
-        if (Objects.isNull(root)) {
-            root = new Node(key);
-            result = true;
-        } else {
-            result = put(root, key);
-        }
-        return result;
-    }
-
-    private boolean put(Node node, T key) {
-        boolean result = true;
-        if (key.compareTo(node.key) > 0) {
-            if (Objects.isNull(node.right)) {
-                node.right = new Node(key);
-            } else {
-                result = put(node.right, key);
-            }
-        } else {
-            if (Objects.isNull(node.left)) {
-                node.left = new Node(key);
-            } else {
-                result = put(node.left, key);
-            }
-        }
-        return result;
-    }
-
-    public boolean contains(T key) {
-        return Objects.nonNull(root) && Objects.nonNull(find(root, key));
-    }
-
-    private Node find(Node node, T key) {
-        if (Objects.isNull(node)) {
-            return null;
-        }
-
-        Node result;
-        if (key.compareTo(node.key) == 0) {
-            result = node;
-        } else if (key.compareTo(node.key) > 0) {
-            result = find(node.right, key);
-        } else {
-            result = find(node.left, key);
-        }
-        return result;
-    }
-
     public boolean insert(T value) {
         boolean result = false;
         if (Objects.nonNull(value) && !contains(value)) {
@@ -81,24 +32,24 @@ public class AvlTree<T extends Comparable<T>> {
         return result;
     }
 
-    public boolean remove(T element) {
+    public boolean remove(T value) {
         boolean result = false;
-        if (Objects.nonNull(element) && Objects.nonNull(root) && contains(element)) {
-            root = remove(root, element);
+        if (Objects.nonNull(value) && Objects.nonNull(root) && contains(value)) {
+            root = remove(root, value);
             result = true;
         }
         return result;
     }
 
-    private Node remove(Node node, T element) {
+    private Node remove(Node node, T value) {
         if (node == null) {
             return null;
         }
-        int comparisonResult = element.compareTo(node.key);
+        int comparisonResult = value.compareTo(node.key);
         if (comparisonResult < 0) {
-            node.left = remove(node.left, element);
+            node.left = remove(node.left, value);
         } else if (comparisonResult > 0) {
-            node.right = remove(node.right, element);
+            node.right = remove(node.right, value);
         } else {
             if (node.left == null) {
                 return node.right;
@@ -118,6 +69,26 @@ public class AvlTree<T extends Comparable<T>> {
         }
         updateHeight(node);
         return balance(node);
+    }
+
+    public boolean contains(T value) {
+        return Objects.nonNull(root) && Objects.nonNull(find(root, value));
+    }
+
+    private Node find(Node node, T value) {
+        if (Objects.isNull(node)) {
+            return null;
+        }
+
+        Node result;
+        if (value.compareTo(node.key) == 0) {
+            result = node;
+        } else if (value.compareTo(node.key) > 0) {
+            result = find(node.right, value);
+        } else {
+            result = find(node.left, value);
+        }
+        return result;
     }
 
     private void updateHeight(Node node) {
