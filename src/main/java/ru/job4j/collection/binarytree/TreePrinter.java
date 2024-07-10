@@ -3,9 +3,9 @@ package ru.job4j.collection.binarytree;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PrintTree {
+public class TreePrinter {
 
-    private PrintTree() {
+    private TreePrinter() {
         throw new IllegalStateException("Utility class");
     }
 

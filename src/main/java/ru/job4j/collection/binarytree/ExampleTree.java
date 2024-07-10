@@ -54,6 +54,6 @@ public class ExampleTree {
 
     @Override
     public String toString() {
-        return PrintTree.getTreeDisplay(root);
+        return TreePrinter.getTreeDisplay(root);
     }
 }

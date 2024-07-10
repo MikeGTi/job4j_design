@@ -1,6 +1,8 @@
 package ru.job4j.collection.binarytree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
@@ -220,7 +222,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
 
     @Override
     public String toString() {
-        return PrintTree.getTreeDisplay(root);
+        return TreePrinter.getTreeDisplay(root);
     }
 
     private class Node implements VisualNode {
