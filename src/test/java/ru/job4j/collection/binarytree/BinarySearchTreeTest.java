@@ -1,7 +1,6 @@
 package ru.job4j.collection.binarytree;
 
 import org.junit.jupiter.api.Test;
-
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -141,10 +140,8 @@ class BinarySearchTreeTest {
     }
 
     @Test
-    public void whenRemoveNodeMaintainBstProperties() {
-
+    public void whenRemoveNodeThanTreeOk() {
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-        System.out.println(bst);
         bst.put(10);
         bst.put(5);
         bst.put(15);
@@ -153,26 +150,43 @@ class BinarySearchTreeTest {
         /*System.out.printf("Before:%n%s%n", bst);*/
         assertTrue(bst.remove(5));
         /*System.out.printf("Remove node (5):%n%s%n", bst);*/
-        System.out.println(bst);
         assertFalse(bst.contains(5));
         assertTrue(bst.contains(3));
         assertTrue(bst.contains(7));
     }
 
-    /*@Test
-    public void whenRemoveNodeUpdateParentReferences() {
+    @Test
+    public void whenClearThanRemovesAllNodes() {
         BinarySearchTree<Integer> bst = new BinarySearchTree<>();
-        bst.put(10);
+        int[] array = new int[]{2, 1, 10, 6, 14, 4, 8, 12, 16, 11, 9, 13, 15, 17, 3, 5, 7};
+        for (int i : array) {
+            bst.put(i);
+        }
+        bst.clear();
+        assertTrue(bst.inSymmetricalOrder().isEmpty());
+    }
+
+    @Test
+    public void whenClearOnEmptyTree() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.clear();
+        assertTrue(bst.inSymmetricalOrder().isEmpty());
+    }
+
+    @Test
+    public void whenClearOnSingleNodeTree() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+        bst.put(1);
+        bst.clear();
+        assertTrue(bst.inSymmetricalOrder().isEmpty());
+    }
+
+    @Test
+    public void whenClearOnPopulatedTreeDoesNotThrowExceptions() {
+        BinarySearchTree<Integer> bst = new BinarySearchTree<>();
         bst.put(5);
-        bst.put(15);
-        bst.put(3);
-        bst.put(7);
-        assertTrue(bst.remove(5));
-        assertFalse(bst.contains(5));
-        assertTrue(bst.contains(3));
-        assertTrue(bst.contains(7));
-        assertEquals(Integer.valueOf(10), bst.root.key);
-        assertEquals(Integer.valueOf(3), bst.root.left.key);
-        assertEquals(Integer.valueOf(7), bst.root.left.right.key);
-    }*/
+        bst.put(10);
+        assertDoesNotThrow(bst::clear);
+    }
+
 }

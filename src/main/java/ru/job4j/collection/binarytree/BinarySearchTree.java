@@ -201,6 +201,23 @@ public class BinarySearchTree<T extends Comparable<T>> {
         return node;
     }
 
+    public void clear() {
+        Node node = root;
+        clear(node);
+        root = null;
+    }
+
+    private void clear(Node first) {
+        if (first != null) {
+            clear(first.left);
+            clear(first.right);
+
+            first.left = null;
+            first.right = null;
+            first.key = null;
+        }
+    }
+
     @Override
     public String toString() {
         return PrintTree.getTreeDisplay(root);
@@ -239,7 +256,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
         }
         System.out.println(bst);
         System.out.println(bst.remove(10));
-        System.out.println("После удаления узла 10 :");
+        System.out.println("After delete node (10) :");
         System.out.println(bst);
     }
 }
